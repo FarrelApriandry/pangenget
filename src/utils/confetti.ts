@@ -11,7 +11,7 @@ export function fireTaskCompletionConfetti() {
   const defaults = {
     origin: { y: 0.7 },
     disableForReducedMotion: true,
-    colors: ["#10b981", "#059669", "#34d399", "#f59e0b", "#fbbf24", "#0284c7"],
+    colors: ["#a4ac86", "#656d4a", "#333d29", "#414833", "#d3dbc3", "#c2a649"],
   };
 
   function fire(particleRatio: number, opts: confetti.Options) {
