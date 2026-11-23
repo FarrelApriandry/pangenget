@@ -154,10 +154,10 @@ export function TaskItem({
 
   if (isEditing) {
     return (
-      <div className="p-4 rounded-xl border border-emerald-300 dark:border-emerald-800 bg-white dark:bg-neutral-900 shadow-md">
+      <div className="p-4 rounded-xl border border-[#d3dbc3] dark:border-[#333d29] bg-white dark:bg-[#20261b] shadow-md">
         <form onSubmit={handleSaveEdit} className="space-y-3">
           <div>
-            <label className="block text-xs font-semibold text-neutral-500 dark:text-neutral-400 mb-1">
+            <label className="block text-xs font-semibold text-[#656d4a] dark:text-[#a4ac86] mb-1">
               Judul Tugas
             </label>
             <input
@@ -165,31 +165,31 @@ export function TaskItem({
               value={editTitle}
               onChange={(e) => setEditTitle(e.target.value)}
               required
-              className="w-full px-3 py-2 text-sm rounded-lg border border-neutral-300 dark:border-neutral-700 bg-transparent text-neutral-900 dark:text-neutral-100 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+              className="w-full px-3 py-2 text-sm rounded-lg border border-[#d5dcce] dark:border-[#333d29] bg-transparent text-[#333d29] dark:text-[#f5f7f1] focus:outline-none focus:ring-2 focus:ring-[#656d4a]"
             />
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-neutral-500 dark:text-neutral-400 mb-1">
+            <label className="block text-xs font-semibold text-[#656d4a] dark:text-[#a4ac86] mb-1">
               Catatan / Detail Tambahan
             </label>
             <textarea
               value={editDescription}
               onChange={(e) => setEditDescription(e.target.value)}
               rows={2}
-              className="w-full px-3 py-2 text-sm rounded-lg border border-neutral-300 dark:border-neutral-700 bg-transparent text-neutral-900 dark:text-neutral-100 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+              className="w-full px-3 py-2 text-sm rounded-lg border border-[#d5dcce] dark:border-[#333d29] bg-transparent text-[#333d29] dark:text-[#f5f7f1] focus:outline-none focus:ring-2 focus:ring-[#656d4a]"
             />
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
             <div>
-              <label className="block text-xs font-semibold text-neutral-500 dark:text-neutral-400 mb-1">
+              <label className="block text-xs font-semibold text-[#656d4a] dark:text-[#a4ac86] mb-1">
                 Prioritas
               </label>
               <select
                 value={editPriority}
                 onChange={(e) => setEditPriority(e.target.value)}
-                className="w-full px-2.5 py-1.5 text-xs rounded-lg border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                className="w-full px-2.5 py-1.5 text-xs rounded-lg border border-[#d5dcce] dark:border-[#333d29] bg-white dark:bg-[#293121] text-[#333d29] dark:text-[#f5f7f1] focus:outline-none focus:ring-2 focus:ring-[#656d4a]"
               >
                 <option value="urgent">Urgent</option>
                 <option value="high">Tinggi</option>
@@ -199,7 +199,7 @@ export function TaskItem({
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-neutral-500 dark:text-neutral-400 mb-1">
+              <label className="block text-xs font-semibold text-[#656d4a] dark:text-[#a4ac86] mb-1">
                 Kategori
               </label>
               <input
@@ -207,34 +207,34 @@ export function TaskItem({
                 value={editCategory}
                 onChange={(e) => setEditCategory(e.target.value)}
                 placeholder="Umum, Kerja, dll"
-                className="w-full px-2.5 py-1.5 text-xs rounded-lg border border-neutral-300 dark:border-neutral-700 bg-transparent text-neutral-900 dark:text-neutral-100 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                className="w-full px-2.5 py-1.5 text-xs rounded-lg border border-[#d5dcce] dark:border-[#333d29] bg-transparent text-[#333d29] dark:text-[#f5f7f1] focus:outline-none focus:ring-2 focus:ring-[#656d4a]"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-neutral-500 dark:text-neutral-400 mb-1">
+              <label className="block text-xs font-semibold text-[#656d4a] dark:text-[#a4ac86] mb-1">
                 Batas Waktu (Due Date)
               </label>
               <input
                 type="date"
                 value={editDueDate}
                 onChange={(e) => setEditDueDate(e.target.value)}
-                className="w-full px-2.5 py-1.5 text-xs rounded-lg border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                className="w-full px-2.5 py-1.5 text-xs rounded-lg border border-[#d5dcce] dark:border-[#333d29] bg-white dark:bg-[#293121] text-[#333d29] dark:text-[#f5f7f1] focus:outline-none focus:ring-2 focus:ring-[#656d4a]"
               />
             </div>
           </div>
 
-          <div className="flex justify-end gap-2 pt-2 border-t border-neutral-100 dark:border-neutral-800">
+          <div className="flex justify-end gap-2 pt-2 border-t border-[#d5dcce]/60 dark:border-[#333d29]/60">
             <button
               type="button"
               onClick={handleCancelEdit}
-              className="px-3 py-1.5 text-xs font-medium text-neutral-600 dark:text-neutral-400 hover:bg-neutral-100 dark:hover:bg-neutral-800 rounded-lg transition-colors press-scale"
+              className="px-3 py-1.5 text-xs font-medium text-[#414833] dark:text-[#d3dbc3] hover:bg-[#e8ecde]/60 dark:hover:bg-[#293121] rounded-lg transition-colors press-scale"
             >
               Batal
             </button>
             <button
               type="submit"
-              className="px-3 py-1.5 text-xs font-medium bg-emerald-600 text-white hover:bg-emerald-700 rounded-lg transition-colors shadow-xs press-scale"
+              className="px-3.5 py-1.5 text-xs font-medium bg-[#333d29] text-[#f5f7f1] hover:bg-[#414833] rounded-lg transition-colors shadow-xs press-scale cursor-pointer"
             >
               Simpan Perubahan
             </button>
@@ -248,10 +248,10 @@ export function TaskItem({
     <div
       className={`group relative p-3.5 sm:p-4 rounded-xl border transition-all duration-200 animate-entrance ${
         task.isCompleted
-          ? "bg-neutral-50/70 dark:bg-neutral-900/40 border-neutral-200/60 dark:border-neutral-800/60 opacity-80"
+          ? "bg-[#e8ecde]/30 dark:bg-[#20261b]/40 border-[#d5dcce]/60 dark:border-[#333d29]/60 opacity-80"
           : task.isPinned
-          ? "bg-amber-50/30 dark:bg-amber-950/10 border-amber-200/70 dark:border-amber-800/50 shadow-xs"
-          : "bg-white dark:bg-neutral-900 border-neutral-200/90 dark:border-neutral-800/90 hover:border-neutral-300 dark:hover:border-neutral-700 shadow-xs"
+          ? "bg-amber-50/40 dark:bg-amber-950/20 border-amber-300/70 dark:border-amber-800/50 shadow-xs"
+          : "bg-white dark:bg-[#20261b] border-[#d5dcce] dark:border-[#333d29] hover:border-[#a4ac86] dark:hover:border-[#656d4a] shadow-xs"
       }`}
     >
       <div className="flex items-start gap-3">
@@ -260,10 +260,10 @@ export function TaskItem({
           type="button"
           onClick={() => onToggleComplete(task.id, task.isCompleted)}
           aria-label={task.isCompleted ? "Tandai belum selesai" : "Tandai selesai"}
-          className={`mt-0.5 w-5 h-5 rounded-md flex items-center justify-center transition-all press-scale shrink-0 ${
+          className={`mt-0.5 w-5 h-5 rounded-md flex items-center justify-center transition-all press-scale shrink-0 cursor-pointer ${
             task.isCompleted
-              ? "bg-emerald-500 text-white border border-emerald-500 shadow-xs"
-              : "border-2 border-neutral-300 dark:border-neutral-600 hover:border-emerald-500 dark:hover:border-emerald-400 bg-transparent"
+              ? "bg-[#656d4a] text-white border border-[#656d4a] shadow-xs"
+              : "border-2 border-[#d5dcce] dark:border-[#414833] hover:border-[#656d4a] dark:hover:border-[#a4ac86] bg-transparent"
           }`}
         >
           {task.isCompleted && <Check size={14} className="stroke-[3]" />}
@@ -321,12 +321,12 @@ export function TaskItem({
                 onClick={() => setShowSubtasks(!showSubtasks)}
                 className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold border transition-colors press-scale ${
                   allSubtasksDone
-                    ? "bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 border-emerald-200 dark:border-emerald-800"
-                    : "bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-300 border-neutral-200 dark:border-neutral-700"
+                    ? "bg-[#e8ecde] dark:bg-[#20261b] text-[#656d4a] dark:text-[#d3dbc3] border-[#d3dbc3] dark:border-[#333d29]"
+                    : "bg-[#e8ecde]/50 dark:bg-[#20261b]/60 text-[#414833] dark:text-[#d3dbc3] border-[#d5dcce] dark:border-[#333d29]"
                 }`}
                 title="Buka / tutup rincian langkah"
               >
-                <CheckSquare size={11} className={allSubtasksDone ? "text-emerald-500" : "text-neutral-400"} />
+                <CheckSquare size={11} className={allSubtasksDone ? "text-[#656d4a] dark:text-[#a4ac86]" : "text-[#414833]/60 dark:text-[#a4ac86]/60"} />
                 <span>
                   {completedSubtasks}/{totalSubtasks} langkah
                 </span>
@@ -338,7 +338,7 @@ export function TaskItem({
           {/* Description if any */}
           {task.description && (
             <p
-              className={`text-xs mt-1 text-neutral-600 dark:text-neutral-400 whitespace-pre-wrap leading-relaxed ${
+              className={`text-xs mt-1 text-[#414833] dark:text-[#d3dbc3] whitespace-pre-wrap leading-relaxed ${
                 task.isCompleted ? "line-through opacity-60" : ""
               }`}
             >
@@ -348,8 +348,8 @@ export function TaskItem({
 
           {/* Subtasks Accordion / Section */}
           {(showSubtasks || totalSubtasks > 0) && (
-            <div className="mt-3 pt-2.5 border-t border-neutral-100 dark:border-neutral-800/80 space-y-2">
-              <div className="flex items-center justify-between text-[11px] text-neutral-400">
+            <div className="mt-3 pt-2.5 border-t border-[#d5dcce]/60 dark:border-[#333d29]/60 space-y-2">
+              <div className="flex items-center justify-between text-[11px] text-[#656d4a] dark:text-[#a4ac86]">
                 <span className="font-semibold uppercase tracking-wider text-[10px]">
                   Rincian Langkah ({completedSubtasks}/{totalSubtasks})
                 </span>
@@ -368,20 +368,20 @@ export function TaskItem({
                   {subtasks.map((sub) => (
                     <div
                       key={sub.id}
-                      className="group/sub flex items-center justify-between gap-2 py-1 px-2 rounded-lg hover:bg-neutral-50 dark:hover:bg-neutral-800/40 text-xs transition-colors"
+                      className="group/sub flex items-center justify-between gap-2 py-1 px-2 rounded-lg hover:bg-[#e8ecde]/50 dark:hover:bg-[#20261b] text-xs transition-colors"
                     >
                       <label className="flex items-center gap-2 cursor-pointer flex-1 min-w-0">
                         <input
                           type="checkbox"
                           checked={sub.isCompleted}
                           onChange={() => handleToggleSubtask(sub.id)}
-                          className="w-3.5 h-3.5 rounded text-emerald-600 focus:ring-emerald-500 border-neutral-300 dark:border-neutral-600 bg-transparent cursor-pointer"
+                          className="w-3.5 h-3.5 rounded text-[#656d4a] focus:ring-[#656d4a] border-[#d5dcce] dark:border-[#414833] bg-transparent cursor-pointer"
                         />
                         <span
                           className={`break-words ${
                             sub.isCompleted
-                              ? "line-through text-neutral-400 dark:text-neutral-500"
-                              : "text-neutral-700 dark:text-neutral-300"
+                              ? "line-through text-[#414833]/50 dark:text-[#d3dbc3]/40"
+                              : "text-[#333d29] dark:text-[#f5f7f1]"
                           }`}
                         >
                           {sub.title}

@@ -69,24 +69,24 @@ export function TaskStats({
       {/* Top summary row */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center font-bold text-xs border border-emerald-500/20">
+          <div className="w-9 h-9 rounded-xl bg-[#e8ecde] dark:bg-[#20261b] text-[#333d29] dark:text-[#d3dbc3] flex items-center justify-center font-bold text-xs border border-[#d3dbc3] dark:border-[#333d29]">
             {percentage}%
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <h4 className="text-sm font-bold text-neutral-900 dark:text-neutral-100">
+              <h4 className="text-sm font-bold text-[#333d29] dark:text-[#f5f7f1]">
                 {percentage === 100 && total > 0
                   ? "Semua tugas beres! Kerja luar biasa 🎉"
                   : `${completed} dari ${total} tugas selesai`}
               </h4>
               {streakData && streakData.currentStreak > 0 && (
-                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-bold bg-amber-500/15 text-amber-600 dark:text-amber-400 border border-amber-500/30">
-                  <Flame size={12} className="text-amber-500 fill-amber-500" />
+                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-bold bg-[#e8ecde] dark:bg-[#20261b] text-[#656d4a] dark:text-[#d3dbc3] border border-[#d3dbc3] dark:border-[#333d29]">
+                  <Flame size={12} className="text-[#656d4a] dark:text-[#a4ac86] fill-[#656d4a] dark:fill-[#a4ac86]" />
                   <span>{streakData.currentStreak} Hari Beruntun</span>
                 </span>
               )}
             </div>
-            <p className="text-xs text-neutral-500 dark:text-neutral-400 mt-0.5">
+            <p className="text-xs text-[#414833]/80 dark:text-[#d3dbc3]/70 mt-0.5">
               {active > 0 ? `${active} tugas masih menunggu dieksekusi` : "Belum ada tugas aktif"}
             </p>
           </div>
@@ -98,13 +98,13 @@ export function TaskStats({
             <button
               type="button"
               onClick={handleCopySummary}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-neutral-700 dark:text-neutral-200 bg-neutral-100/80 dark:bg-neutral-800/80 hover:bg-neutral-200 dark:hover:bg-neutral-700 rounded-lg border border-neutral-200 dark:border-neutral-700 transition-colors press-scale"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-[#333d29] dark:text-[#f5f7f1] bg-[#e8ecde]/70 dark:bg-[#20261b] hover:bg-[#d3dbc3] dark:hover:bg-[#293121] rounded-lg border border-[#d3dbc3] dark:border-[#333d29] transition-colors press-scale"
               title="Salin rekap tugas hari ini untuk WhatsApp / Standup"
             >
               {copied ? (
                 <>
-                  <Check size={13} className="text-emerald-500 stroke-[2.5]" />
-                  <span className="text-emerald-600 dark:text-emerald-400 font-semibold">Tersalin!</span>
+                  <Check size={13} className="text-[#656d4a] dark:text-[#a4ac86] stroke-[2.5]" />
+                  <span className="text-[#656d4a] dark:text-[#a4ac86] font-semibold">Tersalin!</span>
                 </>
               ) : (
                 <>
@@ -130,9 +130,9 @@ export function TaskStats({
       </div>
 
       {/* Progress bar */}
-      <div className="w-full bg-neutral-100 dark:bg-neutral-800/90 h-2 rounded-full overflow-hidden">
+      <div className="w-full bg-[#d5dcce]/40 dark:bg-[#20261b] h-2.5 rounded-full overflow-hidden">
         <div
-          className="bg-emerald-500 h-full rounded-full transition-all duration-300 ease-out"
+          className="bg-[#656d4a] dark:bg-[#a4ac86] h-full rounded-full transition-all duration-300 ease-out"
           style={{ width: `${percentage}%` }}
         />
       </div>

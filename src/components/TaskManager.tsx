@@ -528,14 +528,14 @@ export function TaskManager({ initialTasks = [] }: TaskManagerProps) {
   return (
     <div className="space-y-6">
       {/* Top Toolbar: Quick Utilities, Sound Toggle, Manual Celebration */}
-      <div className="flex items-center justify-between text-xs text-neutral-500 dark:text-neutral-400">
+      <div className="flex items-center justify-between text-xs text-[#656d4a] dark:text-[#a4ac86]">
         <div className="flex items-center gap-2">
-          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-neutral-100 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 font-medium">
-            <Sparkles size={12} className="text-emerald-500" />
+          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-[#e8ecde] dark:bg-[#20261b] text-[#333d29] dark:text-[#f5f7f1] font-medium border border-[#d3dbc3] dark:border-[#333d29]">
+            <Sparkles size={12} className="text-[#656d4a] dark:text-[#a4ac86]" />
             <span>Pangenget List</span>
           </span>
-          <span className="hidden sm:inline text-neutral-400">
-            Ketik <kbd className="font-mono bg-neutral-100 dark:bg-neutral-800 px-1 py-0.5 rounded border border-neutral-300 dark:border-neutral-700">!urgent</kbd> atau <kbd className="font-mono bg-neutral-100 dark:bg-neutral-800 px-1 py-0.5 rounded border border-neutral-300 dark:border-neutral-700">#proyek</kbd>
+          <span className="hidden sm:inline text-[#414833]/70 dark:text-[#d3dbc3]/70">
+            Ketik <kbd className="font-mono bg-[#e8ecde]/60 dark:bg-[#20261b] px-1 py-0.5 rounded border border-[#d3dbc3] dark:border-[#333d29]">!urgent</kbd> atau <kbd className="font-mono bg-[#e8ecde]/60 dark:bg-[#20261b] px-1 py-0.5 rounded border border-[#d3dbc3] dark:border-[#333d29]">#proyek</kbd>
           </span>
         </div>
 
@@ -544,17 +544,17 @@ export function TaskManager({ initialTasks = [] }: TaskManagerProps) {
             type="button"
             onClick={toggleSound}
             aria-label={soundEnabled ? "Nonaktifkan suara" : "Aktifkan suara"}
-            className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg border border-neutral-200 dark:border-neutral-800 hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors press-scale"
+            className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg border border-[#d5dcce] dark:border-[#333d29] hover:bg-[#e8ecde]/50 dark:hover:bg-[#20261b] text-[#333d29] dark:text-[#f5f7f1] transition-colors press-scale"
             title={soundEnabled ? "Suara aktif (klik untuk membisukan)" : "Suara nonaktif"}
           >
             {soundEnabled ? (
               <>
-                <Volume2 size={13} className="text-emerald-500" />
+                <Volume2 size={13} className="text-[#656d4a] dark:text-[#a4ac86]" />
                 <span className="hidden sm:inline">Suara: Nyala</span>
               </>
             ) : (
               <>
-                <VolumeX size={13} className="text-neutral-400" />
+                <VolumeX size={13} className="text-[#414833]/60 dark:text-[#a4ac86]/60" />
                 <span className="hidden sm:inline">Suara: Bisu</span>
               </>
             )}
@@ -563,7 +563,7 @@ export function TaskManager({ initialTasks = [] }: TaskManagerProps) {
           <button
             type="button"
             onClick={() => setShowShortcuts(true)}
-            className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg border border-neutral-200 dark:border-neutral-800 hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors press-scale"
+            className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg border border-[#d5dcce] dark:border-[#333d29] hover:bg-[#e8ecde]/50 dark:hover:bg-[#20261b] text-[#333d29] dark:text-[#f5f7f1] transition-colors press-scale"
             title="Daftar Pintasan Keyboard (?)"
           >
             <Keyboard size={13} />
@@ -585,7 +585,7 @@ export function TaskManager({ initialTasks = [] }: TaskManagerProps) {
       />
 
       {/* Quick Add Task Input Card with NLP & Voice Input */}
-      <div className="p-4 sm:p-5 rounded-2xl border border-neutral-200/90 dark:border-neutral-800/90 bg-white dark:bg-neutral-900 shadow-sm transition-all focus-within:border-emerald-500/80 dark:focus-within:border-emerald-500/80">
+      <div className="p-4 sm:p-5 rounded-2xl border border-[#d5dcce] dark:border-[#333d29] bg-white dark:bg-[#20261b] shadow-xs transition-all focus-within:border-[#656d4a] dark:focus-within:border-[#a4ac86]">
         {errorMessage && (
           <div className="mb-3 p-3 rounded-xl bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-800 text-xs text-rose-600 dark:text-rose-300 flex items-center gap-2">
             <AlertTriangle size={15} />
@@ -602,7 +602,7 @@ export function TaskManager({ initialTasks = [] }: TaskManagerProps) {
               onChange={(e) => setNewTitle(e.target.value)}
               onFocus={() => setIsExpanded(true)}
               placeholder="Tambahkan tugas... Contoh: Rapat tim besok jam 10 !urgent #kerja"
-              className="flex-1 text-sm sm:text-base bg-transparent text-neutral-900 dark:text-neutral-100 placeholder-neutral-400 focus:outline-none"
+              className="flex-1 text-sm sm:text-base bg-transparent text-[#333d29] dark:text-[#f5f7f1] placeholder-[#414833]/50 dark:placeholder-[#a4ac86]/50 focus:outline-none"
             />
 
             {/* Feature 6: Voice Input Button */}
@@ -613,7 +613,7 @@ export function TaskManager({ initialTasks = [] }: TaskManagerProps) {
                 className={`p-2 rounded-xl transition-all press-scale ${
                   isListening
                     ? "bg-rose-500 text-white animate-pulse shadow-md"
-                    : "text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-200 hover:bg-neutral-100 dark:hover:bg-neutral-800"
+                    : "text-[#656d4a] hover:text-[#333d29] dark:text-[#a4ac86] dark:hover:text-white hover:bg-[#e8ecde]/60 dark:hover:bg-[#293121]"
                 }`}
                 title={isListening ? "Sedang mendengarkan... (klik untuk berhenti)" : "Bicara untuk mendikte tugas"}
               >
@@ -624,7 +624,7 @@ export function TaskManager({ initialTasks = [] }: TaskManagerProps) {
             <button
               type="submit"
               disabled={!newTitle.trim() || isSubmitting}
-              className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-emerald-600 hover:bg-emerald-700 text-white disabled:opacity-40 disabled:pointer-events-none transition-all shadow-xs press-scale shrink-0"
+              className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold bg-[#333d29] hover:bg-[#414833] active:bg-[#293121] text-[#f5f7f1] disabled:opacity-40 disabled:pointer-events-none transition-all shadow-xs press-scale shrink-0 cursor-pointer"
             >
               {isSubmitting ? (
                 <Loader2 size={15} className="animate-spin" />
@@ -646,7 +646,7 @@ export function TaskManager({ initialTasks = [] }: TaskManagerProps) {
           {/* Feature 1: Live NLP Token Chips */}
           {parsedNLP.detectedTokens.length > 0 && (
             <div className="flex items-center gap-1.5 flex-wrap pt-1 text-xs animate-fade-in">
-              <span className="text-[11px] text-neutral-400 dark:text-neutral-500 flex items-center gap-1">
+              <span className="text-[11px] text-[#414833]/70 dark:text-[#a4ac86] flex items-center gap-1">
                 <Zap size={11} className="text-amber-500" />
                 Terdeteksi:
               </span>
@@ -657,7 +657,7 @@ export function TaskManager({ initialTasks = [] }: TaskManagerProps) {
                     tok.type === "priority"
                       ? "bg-rose-50 text-rose-700 dark:bg-rose-950/40 dark:text-rose-300 border-rose-200 dark:border-rose-900"
                       : tok.type === "category"
-                      ? "bg-emerald-50 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-300 border-emerald-200 dark:border-emerald-900"
+                      ? "bg-[#e8ecde] text-[#656d4a] dark:bg-[#293121] dark:text-[#d3dbc3] border-[#d3dbc3] dark:border-[#333d29]"
                       : "bg-sky-50 text-sky-700 dark:bg-sky-950/40 dark:text-sky-300 border-sky-200 dark:border-sky-900"
                   }`}
                 >

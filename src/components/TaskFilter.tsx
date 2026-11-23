@@ -46,7 +46,7 @@ export function TaskFilter({
             value={searchQuery}
             onChange={(e) => onSearchChange(e.target.value)}
             placeholder="Cari tugas... (Tekan / untuk mencari)"
-            className="w-full pl-9 pr-9 py-2 rounded-xl text-sm border border-neutral-200/90 dark:border-neutral-800 bg-white/80 dark:bg-neutral-900/80 text-neutral-900 dark:text-neutral-100 placeholder-neutral-400 focus:outline-none focus:ring-2 focus:ring-emerald-500/70 transition-all"
+            className="w-full pl-9 pr-9 py-2 rounded-xl text-sm border border-[#d5dcce] dark:border-[#333d29] bg-white/80 dark:bg-[#20261b]/80 text-[#333d29] dark:text-[#f5f7f1] placeholder-[#414833]/50 focus:outline-none focus:ring-2 focus:ring-[#656d4a]/50 transition-all"
           />
           {searchQuery && (
             <button
