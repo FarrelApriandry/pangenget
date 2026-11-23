@@ -1,0 +1,33 @@
+name: Telegram Deadline Reminders
+
+on:
+  schedule:
+    # Berjalan secara terjadwal setiap 30 menit
+    - cron: '*/30 * * * *'
+  workflow_dispatch: # Memungkinkan tombol "Run workflow" manual di dashboard GitHub Actions
+
+concurrency:
+  group: telegram-reminders
+  cancel-in-progress: false
+
+jobs:
+  check-and-notify:
+    name: Check Deadlines and Send Telegram Reminders
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Bun environment
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Install dependencies
+        run: bun install
+
+      - name: Run Task Deadline Reminders
+        run: bun run check:reminders
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
