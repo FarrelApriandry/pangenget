@@ -17,6 +17,7 @@
   "dependencies": {
     "@astrojs/node": "^9.0.0",
     "@astrojs/react": "^4.2.0",
+    "@astrojs/vercel": "8.2.11",
     "@neon/auth": "^0.8.2",
     "@neondatabase/serverless": "^0.10.4",
     "@tailwindcss/vite": "^4.0.0",
