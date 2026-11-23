@@ -1,0 +1,70 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { TaskManager } from "../components/TaskManager";
+import { db } from "../db";
+import { tasks } from "../db/schema";
+import { desc, asc, eq, isNull } from "drizzle-orm";
+import { Database, Sparkles } from "lucide-react";
+
+let initialTasks: any[] = [];
+let dbError: string | null = null;
+const userId = Astro.cookies.get("pangenget_user_id")?.value || null;
+
+try {
+  if (process.env.DATABASE_URL) {
+    const condition = userId ? eq(tasks.userId, userId) : isNull(tasks.userId);
+    initialTasks = await db
+      .select()
+      .from(tasks)
+      .where(condition)
+      .orderBy(
+        desc(tasks.isPinned),
+        asc(tasks.isCompleted),
+        desc(tasks.createdAt)
+      );
+  }
+} catch (err: any) {
+  dbError = err.message || "Database connection error";
+}
+---
+
+<BaseLayout title="Pangenget — Tugas Hari Ini">
+  <div class="w-full px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+    <!-- Header Hero Section -->
+    <div class="mb-6 flex flex-col sm:flex-row sm:items-end justify-between gap-3 pb-4 border-b border-neutral-200/60 dark:border-neutral-800/60">
+      <div>
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-emerald-200 dark:border-emerald-800 bg-emerald-50/80 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 text-xs font-semibold mb-2">
+          <Sparkles size={13} className="text-emerald-500" />
+          <span>Workspace Hari Ini</span>
+        </div>
+        <h1 class="text-2xl sm:text-3xl font-black text-neutral-900 dark:text-white tracking-tight">
+          Fokus, Kerjakan, Bereskan
+        </h1>
+      </div>
+      <p class="text-neutral-500 dark:text-neutral-400 text-xs sm:text-sm max-w-md">
+        Kelola prioritas aktif hari ini dengan cepat. Gunakan pintasan suara atau teks natural untuk mencatat instan.
+      </p>
+    </div>
+
+    <!-- Alert if DATABASE_URL is missing -->
+    {!process.env.DATABASE_URL && (
+      <div class="mb-6 p-4 rounded-2xl border border-amber-300 bg-amber-50 dark:bg-amber-950/30 dark:border-amber-800 text-amber-900 dark:text-amber-200 text-sm">
+        <div class="font-bold flex items-center gap-2 mb-1">
+          <Database size={16} /> Perhatian: DATABASE_URL belum diatur
+        </div>
+        <p class="text-xs sm:text-sm">
+          Silakan isi <code>DATABASE_URL</code> di file <code>.env</code> Anda dengan connection string dari Neon Console.
+        </p>
+      </div>
+    )}
+
+    {dbError && (
+      <div class="mb-6 p-4 rounded-2xl border border-red-300 bg-red-50 dark:bg-red-950/30 dark:border-red-800 text-red-900 dark:text-red-200 text-sm">
+        <strong>Error Koneksi DB:</strong> {dbError}
+      </div>
+    )}
+
+    <!-- Interactive Task Manager Island -->
+    <TaskManager client:load initialTasks={initialTasks} />
+  </div>
+</BaseLayout>

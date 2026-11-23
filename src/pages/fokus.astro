@@ -1,0 +1,35 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { FocusWorkspace } from "../components/FocusWorkspace";
+import { db } from "../db";
+import { tasks } from "../db/schema";
+import { desc, asc, eq, isNull } from "drizzle-orm";
+
+let initialTasks: any[] = [];
+const taskId = Astro.url.searchParams.get("taskId") || undefined;
+const userId = Astro.cookies.get("pangenget_user_id")?.value || null;
+
+try {
+  if (process.env.DATABASE_URL) {
+    const condition = userId ? eq(tasks.userId, userId) : isNull(tasks.userId);
+    initialTasks = await db
+      .select()
+      .from(tasks)
+      .where(condition)
+      .orderBy(
+        desc(tasks.isPinned),
+        asc(tasks.isCompleted),
+        desc(tasks.createdAt)
+      );
+  }
+} catch (err: any) {
+  console.error("DB error in fokus.astro:", err.message);
+}
+---
+
+<BaseLayout
+  title="Mode Fokus — Pangenget"
+  description="Ruang kerja Zen dan timer fokus Pomodoro untuk menyelesaikan tugas tanpa distraksi."
+>
+  <FocusWorkspace client:load initialTasks={initialTasks} initialTaskId={taskId} />
+</BaseLayout>

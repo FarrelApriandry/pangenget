@@ -1,0 +1,63 @@
+---
+import "../styles/global.css";
+import { Navbar } from "../components/Navbar";
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = "Pangenget — Fokus, Kerjakan, Bereskan",
+  description = "Aplikasi To-Do List terstruktur berbasis Astro 5 SSR dan Neon Serverless PostgreSQL."
+} = Astro.props;
+
+const currentPath = Astro.url.pathname;
+---
+
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    
+    <script is:inline>
+      const savedTheme = localStorage.getItem("theme");
+      const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+      if (savedTheme === "dark" || (!savedTheme && prefersDark)) {
+        document.documentElement.classList.add("dark");
+      } else {
+        document.documentElement.classList.remove("dark");
+      }
+    </script>
+  </head>
+  <body class="bg-neutral-50 dark:bg-neutral-950 text-neutral-900 dark:text-neutral-100 flex flex-col min-h-screen">
+    <Navbar client:load siteName="Pangenget" currentPath={currentPath} />
+
+    <main class="flex-1 pb-24 sm:pb-16">
+      <slot />
+    </main>
+
+    <footer class="border-t border-neutral-200/80 dark:border-neutral-800/80 py-6 text-center text-xs text-neutral-500 dark:text-neutral-400 mt-auto hidden sm:block">
+      <div class="w-full px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div class="flex items-center gap-2">
+          <span class="font-semibold text-neutral-700 dark:text-neutral-300">Pangenget</span>
+          <span>&bull;</span>
+          <span>Fokus, Kerjakan, Bereskan.</span>
+        </div>
+        <div class="flex items-center gap-4">
+          <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400 text-[11px] font-medium border border-emerald-200 dark:border-emerald-800">
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+            Neon Serverless Connected
+          </span>
+          <a href="/landing-page/" class="hover:underline font-semibold text-emerald-600 dark:text-emerald-400">Landing Page</a>
+          <a href="/api/tasks" target="_blank" class="hover:underline">API Tasks</a>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

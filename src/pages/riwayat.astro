@@ -1,0 +1,30 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { HistoryWorkspace } from "../components/HistoryWorkspace";
+import { db } from "../db";
+import { tasks } from "../db/schema";
+import { desc, eq, isNull } from "drizzle-orm";
+
+let initialTasks: any[] = [];
+const userId = Astro.cookies.get("pangenget_user_id")?.value || null;
+
+try {
+  if (process.env.DATABASE_URL) {
+    const condition = userId ? eq(tasks.userId, userId) : isNull(tasks.userId);
+    initialTasks = await db
+      .select()
+      .from(tasks)
+      .where(condition)
+      .orderBy(desc(tasks.completedAt), desc(tasks.createdAt));
+  }
+} catch (err: any) {
+  console.error("DB error in riwayat.astro:", err.message);
+}
+---
+
+<BaseLayout
+  title="Riwayat & Arsip — Pangenget"
+  description="Tinjau catatan tugas yang telah diselesaikan, pantau streak harian, dan ekspor ringkasan tugas."
+>
+  <HistoryWorkspace client:load initialTasks={initialTasks} />
+</BaseLayout>
