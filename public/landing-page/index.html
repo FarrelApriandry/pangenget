@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="id" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pangenget — To-Do List Cepat, Fokus Kerja Harian</title>
+  <meta name="description" content="To-do list cepat tanpa beban untuk sahabat dan tim terdekat. Pengurai bahasa alami, mode fokus Pomodoro, standup instan 1-klik, dan database Neon PostgreSQL." />
+  <meta name="page-type" content="software" />
+  <meta name="site-kind" content="software" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="stylesheet" href="./style.css" />
+</head>
+<body>
+  <!-- Header / Navigasi Minimalis -->
+  <header class="site-header">
+    <div class="nav-container">
+      <a href="/" class="brand-logo" aria-label="Pangenget Beranda">
+        <div class="logo-box">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="9 11 12 14 22 4"></polyline>
+            <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
+          </svg>
+        </div>
+        <span class="brand-name">Pangenget</span>
+        <span class="brand-meta">v1.2</span>
+      </a>
+
+      <nav class="nav-links" aria-label="Navigasi Utama">
+        <a href="#quick-capture" class="nav-link">Alur Kerja</a>
+        <a href="#focus-mode" class="nav-link">Mode Fokus</a>
+        <a href="#standup" class="nav-link">Standup</a>
+        <a href="#shortcuts" class="nav-link">Keyboard</a>
+        <a href="#faq" class="nav-link">FAQ</a>
+      </nav>
+
+      <div class="nav-actions">
+        <button id="themeToggle" class="icon-btn" aria-label="Ganti Tema Tampilan" title="Ganti Tema">
+          <svg class="sun-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+          </svg>
+          <svg class="moon-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>
+        </button>
+
+        <a href="/" class="btn btn-secondary">Masuk</a>
+        <a href="/" class="btn btn-primary">
+          <span>Buka Aplikasi</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+            <polyline points="12 5 19 12 12 19"></polyline>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- Hero: Editorial, Padat, Langsung Berisi Live Interactive Workspace -->
+    <section class="hero-section">
+      <div class="content-container">
+        <div class="hero-content">
+          <div class="status-indicator">
+            <span class="status-dot"></span>
+            <span>Akses Gratis untuk Teman &amp; Tim Terdekat • Multi-tenant Neon DB</span>
+          </div>
+
+          <h1 class="hero-heading">
+            To-do list cepat tanpa beban.<br />
+            Ketik apa adanya, fokus selesaikan.
+          </h1>
+
+          <p class="hero-lead">
+            Pangenget dibangun untuk menghilangkan hambatan pencatatan tugas. Tulis kalimat biasa untuk memisahkan tanggal, kategori, dan prioritas secara otomatis. Tanpa iklan, tanpa biaya langganan.
+          </p>
+
+          <div class="hero-cta-group">
+            <a href="/" class="btn btn-lg btn-primary">
+              <span>Buka Pangenget Sekarang</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+                <polyline points="12 5 19 12 12 19"></polyline>
+              </svg>
+            </a>
+            <a href="#quick-capture" class="btn btn-lg btn-secondary">
+              <span>Pelajari Alur Kerja</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Live Interactive Terminal & Task Preview (Bukan mockup palsu, melainkan simulator fungsional) -->
+        <div class="live-hero-card" id="heroInteractive">
+          <div class="card-bar">
+            <div class="bar-left">
+              <span class="bar-title">Terminal Input Cepat</span>
+              <span class="badge-subtle">NLP Siap</span>
+            </div>
+            <div class="bar-right">
+              <span class="kbd-hint"><kbd>Enter</kbd> untuk simpan</span>
+            </div>
+          </div>
+
+          <div class="card-body">
+            <!-- Input Row -->
+            <div class="terminal-input-row">
+              <div class="prompt-icon">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
+              </div>
+              <input
+                type="text"
+                id="heroInput"
+                class="terminal-input"
+                value="Kirim laporan performa besok jam 2 siang !urgent #keuangan"
+                placeholder="Ketik tugas... misal: Rapat tim besok jam 10 pagi !tinggi #kerjaan"
+                autocomplete="off"
+                spellcheck="false"
+              />
+              <button id="heroAddBtn" class="btn-terminal-add" title="Tambahkan ke daftar di bawah">Tambah</button>
+            </div>
+
+            <!-- Token Decomposition Live Highlight -->
+            <div class="token-decomposition">
+              <span class="decomp-label">Hasil deteksi:</span>
+              <div class="tokens-list" id="heroTokens">
+                <!-- Injected via script.js -->
+              </div>
+            </div>
+
+            <!-- Presets -->
+            <div class="presets-row">
+              <span class="presets-label">Coba contoh:</span>
+              <button class="preset-tag" data-text="Review draft perjanjian klien besok jam 11 siang !urgent #legal">#legal besok</button>
+              <button class="preset-tag" data-text="Beli filter kopi dan susu oat nanti malam #belanja">#belanja nanti</button>
+              <button class="preset-tag" data-text="Deploy pembaruan API staging jam 4 sore !tinggi #engineering">#engineering jam 4</button>
+            </div>
+
+            <!-- Live Mini Workspace -->
+            <div class="mini-workspace">
+              <div class="mini-workspace-header">
+                <div class="mw-title-group">
+                  <span class="mw-title">Daftar Tugas Hari Ini</span>
+                  <span id="mwProgressText" class="mw-progress-badge">2 dari 3 selesai (66%)</span>
+                </div>
+                <div class="mw-progress-track">
+                  <div id="mwProgressBar" class="mw-progress-fill" style="width: 66%;"></div>
+                </div>
+              </div>
+
+              <div class="mw-task-list" id="mwTaskList">
+                <!-- Dynamically populated and interactive -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 1: Alur Kerja NLP & Voice Input -->
+    <section id="quick-capture" class="content-section">
+      <div class="content-container">
+        <div class="section-header">
+          <span class="section-tag">Input Cepat</span>
+          <h2 class="section-title">Pencatatan natural tanpa puluhan dropdown</h2>
+          <p class="section-lead">
+            Isi formulir bertingkat hanya memperlambat eksekusi. Pangenget membaca kalimat natural Anda dalam bahasa Indonesia, mengekstrak kategori, prioritas, dan tenggat waktu secara instan.
+          </p>
+        </div>
+
+        <div class="spec-grid">
+          <div class="spec-card">
+            <div class="spec-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7V4h16v3M9 20h6M12 4v16"/></svg>
+            </div>
+            <h3 class="spec-heading">Tag Kategori Otomatis</h3>
+            <p class="spec-desc">
+              Tambahkan tanda pagar seperti <code>#kerjaan</code>, <code>#pribadi</code>, atau <code>#kuliah</code>. Tugas langsung dikelompokkan ke ruang kerja yang tepat tanpa perlu memindahkan folder.
+            </p>
+            <div class="code-preview">
+              <span class="syntax-keyword">Input:</span> Siapkan slide presentasi <code>#proyek</code><br />
+              <span class="syntax-success">&rarr; Kategori: Proyek</span>
+            </div>
+          </div>
+
+          <div class="spec-card">
+            <div class="spec-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+            </div>
+            <h3 class="spec-heading">Prioritas Berbasis Simbol</h3>
+            <p class="spec-desc">
+              Ketik <code>!urgent</code>, <code>!tinggi</code>, atau <code>!rendah</code>. Sistem menandai tingkat kepentingannya seketika, memberi bobot visual agar Anda tahu apa yang harus dieksekusi pertama.
+            </p>
+            <div class="code-preview">
+              <span class="syntax-keyword">Input:</span> Perbaiki bug server produksi <code>!urgent</code><br />
+              <span class="syntax-urgent">&rarr; Prioritas: URGENT (Wajib hari ini)</span>
+            </div>
+          </div>
+
+          <div class="spec-card">
+            <div class="spec-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            </div>
+            <h3 class="spec-heading">Pengenal Waktu Fleksibel</h3>
+            <p class="spec-desc">
+              Mengenali kata bahasa Indonesia seperti <code>besok</code>, <code>lusa</code>, <code>nanti malam</code>, atau jam spesifik seperti <code>jam 2 siang</code> dan <code>jam 14:30</code>.
+            </p>
+            <div class="code-preview">
+              <span class="syntax-keyword">Input:</span> Bayar tagihan internet <code>besok jam 3 sore</code><br />
+              <span class="syntax-info">&rarr; Tenggat: Besok, 15:00 WIB</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 2: Mode Fokus & Pomodoro Tanpa Distraksi -->
+    <section id="focus-mode" class="content-section bg-subtle">
+      <div class="content-container">
+        <div class="dual-panel">
+          <div class="panel-info">
+            <span class="section-tag">Eksekusi Mendalam</span>
+            <h2 class="section-title">Mode Fokus: Hanya satu tugas di layar</h2>
+            <p class="section-lead">
+              Melihat daftar panjang 30 tugas memicu kepanikan dan menunda pekerjaan. Mode Fokus di Pangenget membersihkan seluruh antarmuka dan hanya menyisakan satu tugas utama Anda.
+            </p>
+
+            <div class="feature-bullets">
+              <div class="bullet-item">
+                <span class="bullet-dot"></span>
+                <div>
+                  <strong>Timer Terintegrasi:</strong> Pilih Pomodoro 25 menit untuk sprint singkat, atau Deep Work 50 menit untuk penyelesaian proyek berat.
+                </div>
+              </div>
+              <div class="bullet-item">
+                <span class="bullet-dot"></span>
+                <div>
+                  <strong>Ceklis Subtask di Tempat:</strong> Eksekusi langkah-langkah mikro langsung dari layar fokus tanpa perlu kembali ke halaman daftar.
+                </div>
+              </div>
+              <div class="bullet-item">
+                <span class="bullet-dot"></span>
+                <div>
+                  <strong>Generator Suara Ambient:</strong> Pemutar white-noise dan nada fokus sintetis menggunakan Web Audio API langsung dari peramban—tanpa buffering.
+                </div>
+              </div>
+            </div>
+
+            <div class="panel-action">
+              <a href="/fokus" class="btn btn-primary">
+                <span>Buka Ruang Fokus</span>
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </a>
+            </div>
+          </div>
+
+          <!-- Live Interactive Focus Simulator -->
+          <div class="panel-interactive">
+            <div class="focus-sim-box">
+              <div class="sim-header">
+                <div class="sim-mode-toggle">
+                  <button id="pomo25Btn" class="mode-btn active">25m Pomodoro</button>
+                  <button id="deep50Btn" class="mode-btn">50m Deep Work</button>
+                </div>
+                <div class="audio-toggle-wrap">
+                  <button id="ambientAudioBtn" class="audio-btn" title="Nyalakan/matikan suara fokus white-noise">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
+                    <span id="audioStatusText">Suara: Mati</span>
+                  </button>
+                </div>
+              </div>
+
+              <div class="clock-display" id="clockDisplay">25:00</div>
+
+              <div class="active-task-pill">
+                <span class="pill-badge">Fokus Sekarang</span>
+                <span class="pill-task" id="currentFocusTitle">Menyelesaikan arsitektur landing page</span>
+              </div>
+
+              <!-- Subtasks in focus simulation -->
+              <div class="sim-subtasks">
+                <label class="subtask-row">
+                  <input type="checkbox" checked />
+                  <span>Audit seluruh AI slop &amp; hapus teks klise</span>
+                </label>
+                <label class="subtask-row">
+                  <input type="checkbox" checked />
+                  <span>Buat styling monospace &amp; sistem warna terukur</span>
+                </label>
+                <label class="subtask-row">
+                  <input type="checkbox" id="simSubtask3" />
+                  <span>Hubungkan simulator audio ambient ke Web Audio API</span>
+                </label>
+              </div>
+
+              <div class="sim-controls">
+                <button id="timerRunBtn" class="btn btn-primary btn-block">Mulai Sesi Fokus</button>
+                <button id="timerResetBtn" class="btn btn-secondary">Reset</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 3: Standup 1 Detik untuk WhatsApp & Slack -->
+    <section id="standup" class="content-section">
+      <div class="content-container">
+        <div class="section-header">
+          <span class="section-tag">Kolaborasi Tanpa Ribet</span>
+          <h2 class="section-title">Format Standup harian dalam satu klik</h2>
+          <p class="section-lead">
+            Tak perlu lagi mengingat apa yang Anda kerjakan kemarin atau mengetik ulang daftar tugas untuk grup WhatsApp atau channel Slack kantor.
+          </p>
+        </div>
+
+        <div class="standup-card">
+          <div class="standup-bar">
+            <div class="standup-bar-title">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+              <span>Pratinjau Format Markdown Standup</span>
+            </div>
+            <button id="copyStandupBtn" class="btn-copy">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+              <span id="copyStandupText">Salin ke Papan Klip</span>
+            </button>
+          </div>
+
+          <pre class="standup-code" id="standupCodeBlock"><code>📋 *DAILY STANDUP - PANGENGET*
+━━━━━━━━━━━━━━━━━━━━━━━━━━
+✅ *SUDAH SELESAI HARI INI:*
+  • Sync database migration Neon PostgreSQL multi-tenant
+  • Sesi deep work 50 menit: Desain landing page anti-slop
+
+⏳ *SEDANG BERJALAN:*
+  • Review pull request neon-auth &amp; perutean workspace
+  • Kirim laporan performa besok jam 2 siang (!urgent)
+
+💡 *KONSISTENSI:*
+  • 7 Hari berturut-turut streak aktif 🔥</code></pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 4: Keyboard Shortcuts (Raycast/Linear style table) -->
+    <section id="shortcuts" class="content-section bg-subtle">
+      <div class="content-container">
+        <div class="section-header">
+          <span class="section-tag">Efisiensi</span>
+          <h2 class="section-title">Navigasi tanpa menyentuh mouse</h2>
+          <p class="section-lead">
+            Dirancang bagi mereka yang bekerja lebih cepat dengan keyboard. Seluruh aksi esensial dapat diakses dengan kombinasi tombol sederhana.
+          </p>
+        </div>
+
+        <div class="shortcuts-table-wrap">
+          <table class="shortcuts-table">
+            <thead>
+              <tr>
+                <th>Pintasan</th>
+                <th>Fungsi</th>
+                <th>Ruang Lingkup</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><kbd>N</kbd></td>
+                <td>Fokus langsung ke input teks pembuatan tugas baru</td>
+                <td>Semua Halaman</td>
+              </tr>
+              <tr>
+                <td><kbd>Esc</kbd></td>
+                <td>Bersihkan input / tutup dialog modal yang sedang terbuka</td>
+                <td>Global</td>
+              </tr>
+              <tr>
+                <td><kbd>1</kbd> / <kbd>2</kbd> / <kbd>3</kbd> / <kbd>4</kbd></td>
+                <td>Pindah cepat antara Beranda, Fokus, Kategori, dan Riwayat</td>
+                <td>Navigasi Utama</td>
+              </tr>
+              <tr>
+                <td><kbd>?</kbd></td>
+                <td>Buka jendela panduan pintasan keyboard lengkap</td>
+                <td>Global</td>
+              </tr>
+              <tr>
+                <td><kbd>Space</kbd></td>
+                <td>Mulai / Jeda timer saat berada di dalam Mode Fokus</td>
+                <td>Halaman Fokus</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 5: Transparansi Arsitektur & Model 0-Payment -->
+    <section class="content-section">
+      <div class="content-container">
+        <div class="section-header">
+          <span class="section-tag">Transparansi</span>
+          <h2 class="section-title">Mengapa Pangenget 100% gratis?</h2>
+          <p class="section-lead">
+            Pangenget bukan produk ventura yang bertujuan membakar uang lalu memeras langganan bulanan. Ini adalah utilitas yang dibuat oleh Fapri untuk pemakaian pribadi dan rekan kerja terdekat.
+          </p>
+        </div>
+
+        <div class="spec-grid">
+          <div class="spec-card">
+            <h3 class="spec-heading">Neon Serverless PostgreSQL</h3>
+            <p class="spec-desc">
+              Data Anda disimpan di infrastruktur cloud serverless Neon dengan isolasi kolom <code>user_id</code>. Database berskala otomatis dan hemat sumber daya saat tidak digunakan.
+            </p>
+          </div>
+
+          <div class="spec-card">
+            <h3 class="spec-heading">Neon Auth Terkelola</h3>
+            <p class="spec-desc">
+              Autentikasi menggunakan Better Auth yang terkelola resmi di Neon. Kata sandi di-hash dengan standar industri dan sesi login disimpan secara aman di peramban Anda.
+            </p>
+          </div>
+
+          <div class="spec-card">
+            <h3 class="spec-heading">Akses Teman &amp; Komunitas</h3>
+            <p class="spec-desc">
+              Pendaftaran dikelola langsung lewat pengajuan email ke <code>fapriandry@gmail.com</code>. Kami menjaga server tetap ringan dan digunakan oleh orang-orang yang memang membutuhkannya.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 6: FAQ Ringkas & Jujur -->
+    <section id="faq" class="content-section bg-subtle">
+      <div class="content-container">
+        <div class="section-header">
+          <span class="section-tag">Tanya Jawab</span>
+          <h2 class="section-title">Pertanyaan Umum</h2>
+        </div>
+
+        <div class="faq-accordion">
+          <details class="faq-row">
+            <summary class="faq-summary">
+              <span>Bagaimana cara mendapatkan akun untuk masuk?</span>
+              <span class="faq-plus">+</span>
+            </summary>
+            <div class="faq-content">
+              Klik tombol <strong>"Masuk"</strong> di navigasi atas, lalu pilih tab <strong>"Minta Akses"</strong>. Masukkan alamat email Anda dan pesan singkat. Permintaan akan langsung diteruskan ke Fapri Andry (<code>fapriandry@gmail.com</code>) dan akun akan dibuatkan di sistem.
+            </div>
+          </details>
+
+          <details class="faq-row">
+            <summary class="faq-summary">
+              <span>Apakah data tugas saya bisa diakses orang lain?</span>
+              <span class="faq-plus">+</span>
+            </summary>
+            <div class="faq-content">
+              Tidak. Setiap baris tugas di database PostgreSQL terikat pada <code>user_id</code> unik akun Anda. Query data selalu memfilter berdasarkan sesi akun yang sedang aktif.
+            </div>
+          </details>
+
+          <details class="faq-row">
+            <summary class="faq-summary">
+              <span>Apakah aplikasi ini bisa dipakai offline?</span>
+              <span class="faq-plus">+</span>
+            </summary>
+            <div class="faq-content">
+              Mode Fokus dan timer dapat berjalan tanpa koneksi internet. Sinkronisasi tugas ke cloud membutuhkan koneksi untuk memperbarui catatan di database Neon PostgreSQL.
+            </div>
+          </details>
+
+          <details class="faq-row">
+            <summary class="faq-summary">
+              <span>Teknologi apa yang digunakan untuk membangun Pangenget?</span>
+              <span class="faq-plus">+</span>
+            </summary>
+            <div class="faq-content">
+              Pangenget dibangun menggunakan Astro 5 SSR, React 19, TypeScript, Tailwind CSS, Lucide Icons, Drizzle ORM, dan Neon Serverless PostgreSQL dengan Neon Auth.
+            </div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 7: Penutup & CTA Sederhana -->
+    <section class="content-section">
+      <div class="content-container">
+        <div class="closing-card">
+          <h2 class="closing-heading">Mulai rapikan tugas hari ini</h2>
+          <p class="closing-sub">
+            Buka aplikasi web Pangenget dan rasakan kecepatan mencatat tanpa hambatan formulir.
+          </p>
+          <div class="closing-actions">
+            <a href="/" class="btn btn-lg btn-primary">
+              <span>Buka Pangenget</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+            </a>
+            <a href="mailto:fapriandry@gmail.com?subject=Permintaan%20Akses%20Pangenget" class="btn btn-lg btn-secondary">
+              <span>Hubungi Pembuat (Fapri)</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer Bersih -->
+  <footer class="site-footer">
+    <div class="content-container">
+      <div class="footer-row">
+        <div class="footer-left">
+          <span class="footer-brand">Pangenget</span>
+          <span class="footer-sep">•</span>
+          <span class="footer-note">Dibuat oleh Fapri Andry untuk teman dan rekan kerja.</span>
+        </div>
+        <div class="footer-nav">
+          <a href="/">Beranda</a>
+          <a href="/fokus">Fokus</a>
+          <a href="/kategori">Kategori</a>
+          <a href="/riwayat">Riwayat</a>
+          <a href="mailto:fapriandry@gmail.com">Kontak</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Toast Notification Container -->
+  <div id="toastContainer" class="toast-container" aria-live="polite"></div>
+
+  <script src="./script.js"></script>
+</body>
+</html>
