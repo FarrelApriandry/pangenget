@@ -189,16 +189,16 @@ export function TelegramSettingsModal({ isOpen, onClose, user }: TelegramSetting
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-neutral-100 dark:border-neutral-800 bg-neutral-50/50 dark:bg-neutral-900/50 shrink-0">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-[#d5dcce]/60 dark:border-[#333d29]/60 bg-[#e8ecde]/30 dark:bg-[#20261b]/50 shrink-0">
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-xl bg-sky-500 text-white flex items-center justify-center shadow-xs">
+            <div className="w-8 h-8 rounded-xl bg-[#333d29] text-white flex items-center justify-center shadow-xs">
               <Send size={16} className="translate-x-[-1px] translate-y-[1px]" />
             </div>
             <div>
-              <h2 id="telegram-modal-title" className="text-base font-bold leading-tight">
+              <h2 id="telegram-modal-title" className="text-base font-bold leading-tight text-[#333d29] dark:text-[#f5f7f1]">
                 Notifikasi Bot Telegram
               </h2>
-              <p className="text-xs text-neutral-500 dark:text-neutral-400">
+              <p className="text-xs text-[#414833]/80 dark:text-[#d3dbc3]/80">
                 Pengingat tenggat tugas otomatis ke akun Telegram Anda
               </p>
             </div>
@@ -216,22 +216,22 @@ export function TelegramSettingsModal({ isOpen, onClose, user }: TelegramSetting
         {/* Scrollable Body */}
         <div className="p-6 overflow-y-auto space-y-5">
           {/* Quick Guide Card */}
-          <div className="p-4 rounded-xl bg-sky-50 dark:bg-sky-950/40 border border-sky-200/80 dark:border-sky-800/80 text-xs text-sky-900 dark:text-sky-200 space-y-2">
+          <div className="p-4 rounded-xl bg-[#e8ecde]/60 dark:bg-[#20261b] border border-[#d3dbc3] dark:border-[#333d29] text-xs text-[#333d29] dark:text-[#f5f7f1] space-y-2">
             <div className="flex items-center justify-between font-bold">
               <span>Langkah Menghubungkan:</span>
               <a
                 href="https://t.me/pangenget_bot"
                 target="_blank"
                 rel="noreferrer"
-                className="inline-flex items-center gap-1 text-sky-700 dark:text-sky-300 hover:underline font-semibold"
+                className="inline-flex items-center gap-1 text-[#656d4a] dark:text-[#a4ac86] hover:underline font-semibold"
               >
                 <span>Buka @pangenget_bot</span>
                 <ExternalLink size={12} />
               </a>
             </div>
-            <ol className="list-decimal list-inside space-y-1 text-neutral-600 dark:text-neutral-300 leading-relaxed">
+            <ol className="list-decimal list-inside space-y-1 text-[#414833] dark:text-[#d3dbc3] leading-relaxed">
               <li>
-                Buka bot Telegram <strong className="text-neutral-800 dark:text-neutral-100">@pangenget_bot</strong> lalu tekan tombol <strong className="text-neutral-800 dark:text-neutral-100">Start</strong>.
+                Buka bot Telegram <strong className="text-[#333d29] dark:text-[#f5f7f1]">@pangenget_bot</strong> lalu tekan tombol <strong className="text-[#333d29] dark:text-[#f5f7f1]">Start</strong>.
               </li>
               <li>
                 Dapatkan ID Telegram Anda (misal via bot <code>@userinfobot</code>) lalu masukkan nomor ID tersebut di bawah.
@@ -243,7 +243,7 @@ export function TelegramSettingsModal({ isOpen, onClose, user }: TelegramSetting
           <form onSubmit={handleSaveSettings} className="space-y-4">
             {/* Telegram Chat ID */}
             <div>
-              <label htmlFor="telegramChatId" className="block text-xs font-semibold text-neutral-700 dark:text-neutral-300 mb-1.5">
+              <label htmlFor="telegramChatId" className="block text-xs font-semibold text-[#333d29] dark:text-[#d3dbc3] mb-1.5">
                 Telegram Chat ID <span className="text-rose-500">*</span>
               </label>
               <div className="flex gap-2">
@@ -254,14 +254,14 @@ export function TelegramSettingsModal({ isOpen, onClose, user }: TelegramSetting
                   value={chatId}
                   onChange={(e) => setChatId(e.target.value)}
                   placeholder="Contoh: 5391048527"
-                  className="flex-1 px-3.5 py-2 text-sm rounded-xl border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-800 text-neutral-900 dark:text-white placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-sky-500/20 focus:border-sky-500 transition-all font-mono"
+                  className="flex-1 px-3.5 py-2 text-sm rounded-xl border border-[#d5dcce] dark:border-[#333d29] bg-white dark:bg-[#20261b] text-[#333d29] dark:text-white placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-[#656d4a]/20 focus:border-[#656d4a] transition-all font-mono"
                   required
                 />
                 <button
                   type="button"
                   onClick={handleTestConnection}
                   disabled={isTesting || !chatId.trim()}
-                  className="px-3.5 py-2 rounded-xl text-xs font-semibold bg-sky-100 dark:bg-sky-950 text-sky-700 dark:text-sky-300 border border-sky-300 dark:border-sky-800 hover:bg-sky-200 dark:hover:bg-sky-900 transition-all press-scale disabled:opacity-50 disabled:pointer-events-none flex items-center gap-1.5 shrink-0"
+                  className="px-3.5 py-2 rounded-xl text-xs font-semibold bg-[#e8ecde] dark:bg-[#293121] text-[#333d29] dark:text-[#f5f7f1] border border-[#d3dbc3] dark:border-[#333d29] hover:bg-[#d3dbc3] dark:hover:bg-[#333d29] transition-all press-scale disabled:opacity-50 disabled:pointer-events-none flex items-center gap-1.5 shrink-0 cursor-pointer"
                 >
                   {isTesting ? (
                     <>
@@ -385,7 +385,7 @@ export function TelegramSettingsModal({ isOpen, onClose, user }: TelegramSetting
               <button
                 type="submit"
                 disabled={isLoading}
-                className="px-5 py-2 rounded-xl text-xs font-bold bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 hover:bg-emerald-600 dark:hover:bg-emerald-400 dark:hover:text-black transition-all press-scale disabled:opacity-50 flex items-center gap-1.5"
+                className="px-5 py-2.5 rounded-xl text-xs font-bold bg-[#333d29] hover:bg-[#414833] text-[#f5f7f1] transition-all press-scale disabled:opacity-50 flex items-center gap-1.5 cursor-pointer"
               >
                 {isLoading ? (
                   <>

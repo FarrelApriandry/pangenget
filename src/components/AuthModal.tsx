@@ -198,24 +198,24 @@ export function AuthModal({ isOpen, onClose, defaultMode = "signin" }: AuthModal
         className="relative w-full max-w-md my-auto bg-white dark:bg-neutral-900 rounded-3xl border border-neutral-200 dark:border-neutral-800 shadow-2xl overflow-hidden animate-modal-content text-neutral-900 dark:text-neutral-100"
       >
         {/* SaaS Friends 0-Payment Header */}
-        <div className="bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-700 px-6 py-5 text-white relative">
+        <div className="bg-gradient-to-r from-[#333d29] via-[#414833] to-[#333d29] px-6 py-5 text-[#f5f7f1] relative">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <span className="p-2 rounded-xl bg-white/20 backdrop-blur-xs flex items-center justify-center">
-                <HeartHandshake size={20} className="text-white" />
+              <span className="p-2 rounded-xl bg-white/10 backdrop-blur-xs flex items-center justify-center">
+                <HeartHandshake size={20} className="text-[#f5f7f1]" />
               </span>
               <div>
-                <h3 id="auth-modal-title" className="font-extrabold text-base tracking-tight text-white leading-tight">
+                <h3 id="auth-modal-title" className="font-extrabold text-base tracking-tight text-[#f5f7f1] leading-tight">
                   Pangenget Sahabat Cloud
                 </h3>
-                <p className="text-xs text-emerald-100/90 font-medium mt-0.5">
+                <p className="text-xs text-[#d3dbc3] font-medium mt-0.5">
                   0-Payment SaaS • Akses Penuh Gratis untuk Sahabat
                 </p>
               </div>
             </div>
             <button
               onClick={onClose}
-              className="p-1.5 rounded-full hover:bg-white/20 text-white/80 hover:text-white transition-colors cursor-pointer"
+              className="p-1.5 rounded-full hover:bg-white/15 text-white/80 hover:text-white transition-colors cursor-pointer"
               aria-label="Tutup jendela"
             >
               <X size={18} />
@@ -225,7 +225,7 @@ export function AuthModal({ isOpen, onClose, defaultMode = "signin" }: AuthModal
 
         <div className="p-6">
           {/* Mode Switcher Tabs */}
-          <div className="flex rounded-xl bg-neutral-100 dark:bg-neutral-800/80 p-1 mb-5">
+          <div className="flex rounded-xl bg-[#e8ecde]/60 dark:bg-[#20261b] border border-[#d3dbc3] dark:border-[#333d29] p-1 mb-5">
             <button
               type="button"
               onClick={() => {
@@ -235,8 +235,8 @@ export function AuthModal({ isOpen, onClose, defaultMode = "signin" }: AuthModal
               }}
               className={`flex-1 py-2 text-xs font-bold rounded-lg transition-all cursor-pointer ${
                 mode === "signin"
-                  ? "bg-white dark:bg-neutral-900 text-neutral-900 dark:text-white shadow-xs"
-                  : "text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white"
+                  ? "bg-[#333d29] text-[#f5f7f1] dark:bg-[#f5f7f1] dark:text-[#333d29] shadow-xs"
+                  : "text-[#656d4a] dark:text-[#a4ac86] hover:text-[#333d29] dark:hover:text-white"
               }`}
             >
               Masuk
@@ -250,8 +250,8 @@ export function AuthModal({ isOpen, onClose, defaultMode = "signin" }: AuthModal
               }}
               className={`flex-1 py-2 text-xs font-bold rounded-lg transition-all cursor-pointer ${
                 mode === "contact"
-                  ? "bg-white dark:bg-neutral-900 text-neutral-900 dark:text-white shadow-xs"
-                  : "text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white"
+                  ? "bg-[#333d29] text-[#f5f7f1] dark:bg-[#f5f7f1] dark:text-[#333d29] shadow-xs"
+                  : "text-[#656d4a] dark:text-[#a4ac86] hover:text-[#333d29] dark:hover:text-white"
               }`}
             >
               Minta Akses (Kontak)
@@ -335,7 +335,7 @@ export function AuthModal({ isOpen, onClose, defaultMode = "signin" }: AuthModal
               <button
                 type="submit"
                 disabled={isLoading}
-                className="w-full mt-2 py-3 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white font-bold text-sm flex items-center justify-center gap-2 shadow-sm transition-all press-scale disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+                className="w-full mt-2 py-3 px-4 rounded-xl bg-[#333d29] hover:bg-[#414833] active:bg-[#293121] text-[#f5f7f1] font-bold text-sm flex items-center justify-center gap-2 shadow-sm transition-all press-scale disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
               >
                 {isLoading ? (
                   <>
@@ -354,7 +354,7 @@ export function AuthModal({ isOpen, onClose, defaultMode = "signin" }: AuthModal
                 <button
                   type="button"
                   onClick={() => setMode("contact")}
-                  className="text-[11px] text-neutral-500 dark:text-neutral-400 hover:text-emerald-600 dark:hover:text-emerald-400 underline cursor-pointer"
+                  className="text-[11px] text-[#656d4a] dark:text-[#a4ac86] hover:underline cursor-pointer"
                 >
                   Belum punya akun? Hubungi pembuat untuk akses gratis
                 </button>
@@ -365,24 +365,24 @@ export function AuthModal({ isOpen, onClose, defaultMode = "signin" }: AuthModal
           {/* Mode 2: Contact Creator (Minta Akses ke fapriandry@gmail.com) */}
           {mode === "contact" && (
             <form onSubmit={handleContactSubmit} className="space-y-4">
-              <div className="p-3 rounded-2xl bg-emerald-50/70 dark:bg-emerald-950/30 border border-emerald-200/60 dark:border-emerald-800/60 text-xs text-neutral-600 dark:text-neutral-300">
-                <p className="font-semibold text-emerald-800 dark:text-emerald-300 mb-0.5">
+              <div className="p-3.5 rounded-2xl bg-[#e8ecde]/60 dark:bg-[#20261b] border border-[#d3dbc3] dark:border-[#333d29] text-xs text-[#333d29] dark:text-[#d3dbc3]">
+                <p className="font-semibold text-[#333d29] dark:text-[#f5f7f1] mb-0.5">
                   Hubungi Pembuat ({TARGET_CREATOR_EMAIL})
                 </p>
-                <p className="text-[11px] text-neutral-500 dark:text-neutral-400">
+                <p className="text-[11px] text-[#414833]/80 dark:text-[#a4ac86]/80">
                   Pangenget khusus untuk sahabat dan tim terdekat. Kirim pesan di bawah untuk mendapatkan akun akses penuh gratis.
                 </p>
               </div>
 
               {/* Input 1: Email Pengguna */}
               <div>
-                <label className="block text-xs font-bold text-neutral-700 dark:text-neutral-300 mb-1.5">
+                <label className="block text-xs font-bold text-[#333d29] dark:text-[#d3dbc3] mb-1.5">
                   Email Pengguna
                 </label>
                 <div className="relative">
                   <Mail
                     size={16}
-                    className="absolute left-3.5 top-1/2 -translate-y-1/2 text-neutral-400 dark:text-neutral-500"
+                    className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#656d4a] dark:text-[#a4ac86]"
                   />
                   <input
                     ref={firstInputRef}
@@ -391,14 +391,14 @@ export function AuthModal({ isOpen, onClose, defaultMode = "signin" }: AuthModal
                     value={contactEmail}
                     onChange={(e) => setContactEmail(e.target.value)}
                     placeholder="nama.anda@gmail.com"
-                    className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-neutral-300 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 text-sm text-neutral-900 dark:text-white placeholder-neutral-400 focus:outline-hidden focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all"
+                    className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-[#d5dcce] dark:border-[#333d29] bg-white dark:bg-[#20261b] text-sm text-[#333d29] dark:text-white placeholder:text-neutral-400 focus:outline-hidden focus:ring-2 focus:ring-[#656d4a] transition-all"
                   />
                 </div>
               </div>
 
               {/* Input 2: Detail Pesan */}
               <div>
-                <label className="block text-xs font-bold text-neutral-700 dark:text-neutral-300 mb-1.5">
+                <label className="block text-xs font-bold text-[#333d29] dark:text-[#d3dbc3] mb-1.5">
                   Detail Pesan
                 </label>
                 <div className="relative">
@@ -408,7 +408,7 @@ export function AuthModal({ isOpen, onClose, defaultMode = "signin" }: AuthModal
                     value={contactMessage}
                     onChange={(e) => setContactMessage(e.target.value)}
                     placeholder="Halo Fapri, ini [Nama Anda]. Boleh minta akses akun untuk mencoba Pangenget?"
-                    className="w-full p-3 rounded-xl border border-neutral-300 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 text-sm text-neutral-900 dark:text-white placeholder-neutral-400 focus:outline-hidden focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all resize-none"
+                    className="w-full p-3 rounded-xl border border-[#d5dcce] dark:border-[#333d29] bg-white dark:bg-[#20261b] text-sm text-[#333d29] dark:text-white placeholder:text-neutral-400 focus:outline-hidden focus:ring-2 focus:ring-[#656d4a] transition-all resize-none"
                   />
                 </div>
               </div>
@@ -416,7 +416,7 @@ export function AuthModal({ isOpen, onClose, defaultMode = "signin" }: AuthModal
               <button
                 type="submit"
                 disabled={isLoading}
-                className="w-full mt-2 py-3 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white font-bold text-sm flex items-center justify-center gap-2 shadow-sm transition-all press-scale disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+                className="w-full mt-2 py-3 px-4 rounded-xl bg-[#333d29] hover:bg-[#414833] active:bg-[#293121] text-[#f5f7f1] font-bold text-sm flex items-center justify-center gap-2 shadow-sm transition-all press-scale disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
               >
                 {isLoading ? (
                   <>
@@ -434,12 +434,12 @@ export function AuthModal({ isOpen, onClose, defaultMode = "signin" }: AuthModal
           )}
 
           {/* Footer Guarantee */}
-          <div className="mt-5 pt-4 border-t border-neutral-200/80 dark:border-neutral-800 text-[11px] text-neutral-500 dark:text-neutral-400 flex items-center justify-between">
+          <div className="mt-5 pt-4 border-t border-[#d5dcce]/60 dark:border-[#333d29]/60 text-[11px] text-[#656d4a] dark:text-[#a4ac86] flex items-center justify-between">
             <span className="flex items-center gap-1.5 font-medium">
-              <ShieldCheck size={14} className="text-emerald-600 dark:text-emerald-400" />
+              <ShieldCheck size={14} className="text-[#656d4a] dark:text-[#a4ac86]" />
               Kontak Langsung Pembuat
             </span>
-            <span className="font-bold text-emerald-600 dark:text-emerald-400">
+            <span className="font-bold text-[#333d29] dark:text-[#f5f7f1]">
               100% Bebas Biaya
             </span>
           </div>
