@@ -9,7 +9,6 @@ import {
   Loader2,
   CheckCircle2,
   ShieldCheck,
-  HeartHandshake,
   Send,
   ExternalLink,
 } from "lucide-react";
@@ -201,8 +200,8 @@ export function AuthModal({ isOpen, onClose, defaultMode = "signin" }: AuthModal
         <div className="bg-gradient-to-r from-[#333d29] via-[#414833] to-[#333d29] px-6 py-5 text-[#f5f7f1] relative">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <span className="p-2 rounded-xl bg-white/10 backdrop-blur-xs flex items-center justify-center">
-                <HeartHandshake size={20} className="text-[#f5f7f1]" />
+              <span className="p-1 rounded-xl bg-white/10 backdrop-blur-xs flex items-center justify-center">
+                <img src="/logo-64.png" alt="Pangenget" width="24" height="24" className="w-6 h-6 rounded-lg object-contain" />
               </span>
               <div>
                 <h3 id="auth-modal-title" className="font-extrabold text-base tracking-tight text-[#f5f7f1] leading-tight">

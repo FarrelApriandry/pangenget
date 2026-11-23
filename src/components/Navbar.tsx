@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { ThemeToggle } from "./ThemeToggle";
 import { UserButton } from "./UserButton";
-import { CheckSquare, Flame, CheckCircle2, Clock, FolderKanban, Archive } from "lucide-react";
+import { Flame, CheckCircle2, Clock, FolderKanban, Archive } from "lucide-react";
 import { getStreakData } from "../utils/streak";
 
 interface NavbarProps {
@@ -40,9 +40,13 @@ export function Navbar({ siteName = "Pangenget", currentPath = "/" }: NavbarProp
         <div className="w-full px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
           {/* Brand Identity */}
           <a href="/" className="flex items-center gap-2.5 group shrink-0">
-            <div className="w-8 h-8 rounded-xl bg-[#333d29] text-[#f5f7f1] flex items-center justify-center shadow-xs transition-transform group-hover:scale-105 group-hover:bg-[#414833]">
-              <CheckSquare size={18} className="stroke-[2.5]" />
-            </div>
+            <img
+              src="/logo-64.png"
+              alt="Logo Pangenget"
+              width="32"
+              height="32"
+              className="w-8 h-8 rounded-xl object-contain shadow-xs transition-transform group-hover:scale-105"
+            />
             <div>
               <span className="font-extrabold text-base tracking-tight text-[#333d29] dark:text-[#f5f7f1] block leading-none">
                 {siteName}
