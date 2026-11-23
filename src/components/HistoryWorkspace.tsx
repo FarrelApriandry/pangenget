@@ -123,32 +123,32 @@ export function HistoryWorkspace({ initialTasks }: HistoryWorkspaceProps) {
   return (
     <div className="w-full px-4 sm:px-6 lg:px-8 py-6 sm:py-8 space-y-8 animate-fade-in">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 pb-4 border-b border-neutral-200/60 dark:border-neutral-800/60">
+      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 pb-4 border-b border-[#d5dcce]/70 dark:border-[#333d29]/70">
         <div>
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800 mb-2">
-            <Archive size={13} className="text-emerald-500" />
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-[#e8ecde] dark:bg-[#20261b] text-[#656d4a] dark:text-[#d3dbc3] border border-[#d3dbc3] dark:border-[#333d29] mb-2">
+            <Archive size={13} className="text-[#656d4a] dark:text-[#a4ac86]" />
             <span>Log Pencapaian &amp; Arsip</span>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-black text-neutral-900 dark:text-white tracking-tight">
+          <h1 className="text-2xl sm:text-3xl font-black text-[#333d29] dark:text-[#f5f7f1] tracking-tight">
             Riwayat Tugas Selesai
           </h1>
         </div>
-        <p className="text-xs sm:text-sm text-neutral-500 dark:text-neutral-400 max-w-md">
+        <p className="text-xs sm:text-sm text-[#414833]/80 dark:text-[#d3dbc3]/80 max-w-md">
           Arsip tugas yang telah tuntas. Tinjau apa saja yang sudah Anda capai atau ekspor ringkasan untuk tim.
         </p>
       </div>
 
       {/* Summary Action Card */}
-      <div className="p-5 rounded-2xl border border-neutral-200/90 dark:border-neutral-800/90 bg-white/80 dark:bg-neutral-900/80 backdrop-blur-md flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-xs">
+      <div className="p-5 rounded-2xl border border-[#d5dcce] dark:border-[#333d29] bg-white/80 dark:bg-[#20261b]/80 backdrop-blur-md flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-xs">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center font-bold border border-amber-500/20">
-            <Flame size={20} className="fill-amber-500" />
+          <div className="w-10 h-10 rounded-xl bg-[#e8ecde] dark:bg-[#293121] text-[#656d4a] dark:text-[#d3dbc3] flex items-center justify-center font-bold border border-[#d3dbc3] dark:border-[#333d29]">
+            <Flame size={20} className="fill-[#656d4a] dark:fill-[#a4ac86]" />
           </div>
           <div>
-            <div className="text-sm font-bold text-neutral-900 dark:text-neutral-100">
+            <div className="text-sm font-bold text-[#333d29] dark:text-[#f5f7f1]">
               {streak.currentStreak} Hari Beruntun Produktif!
             </div>
-            <div className="text-xs text-neutral-500">
+            <div className="text-xs text-[#414833]/80 dark:text-[#d3dbc3]/80">
               Total {completedTasks.length} tugas telah berhasil diselesaikan.
             </div>
           </div>
@@ -158,12 +158,12 @@ export function HistoryWorkspace({ initialTasks }: HistoryWorkspaceProps) {
           <button
             type="button"
             onClick={handleCopyStandup}
-            className="flex-1 sm:flex-none inline-flex items-center justify-center gap-1.5 px-3.5 py-2 text-xs font-semibold rounded-xl bg-neutral-100 hover:bg-neutral-200 dark:bg-neutral-800 dark:hover:bg-neutral-700 text-neutral-900 dark:text-white transition-colors press-scale"
+            className="flex-1 sm:flex-none inline-flex items-center justify-center gap-1.5 px-3.5 py-2 text-xs font-semibold rounded-xl bg-[#e8ecde] hover:bg-[#d3dbc3] dark:bg-[#293121] dark:hover:bg-[#333d29] text-[#333d29] dark:text-[#f5f7f1] border border-[#d3dbc3] dark:border-[#333d29] transition-colors press-scale cursor-pointer"
           >
             {copied ? (
               <>
-                <Check size={14} className="text-emerald-500 stroke-[3]" />
-                <span className="text-emerald-600 dark:text-emerald-400">Tersalin ke Clipboard!</span>
+                <Check size={14} className="text-[#656d4a] dark:text-[#a4ac86] stroke-[3]" />
+                <span className="text-[#656d4a] dark:text-[#a4ac86]">Tersalin ke Clipboard!</span>
               </>
             ) : (
               <>

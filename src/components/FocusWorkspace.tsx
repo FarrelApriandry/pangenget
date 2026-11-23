@@ -185,31 +185,31 @@ export function FocusWorkspace({ initialTasks, initialTaskId }: FocusWorkspacePr
       {/* Main Focus Card */}
       <div className="p-8 sm:p-12 rounded-3xl border border-neutral-200/90 dark:border-neutral-800/90 bg-white/80 dark:bg-neutral-900/80 backdrop-blur-xl shadow-xl text-center space-y-8 relative overflow-hidden">
         {/* Ambient Glow */}
-        <div className="absolute -top-24 left-1/2 -translate-x-1/2 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute -top-24 left-1/2 -translate-x-1/2 w-96 h-96 bg-[#a4ac86]/20 dark:bg-[#656d4a]/20 rounded-full blur-3xl pointer-events-none" />
 
         {currentTask ? (
           <>
             {/* Task Meta & Heading */}
             <div className="space-y-3">
               <div className="flex items-center justify-center gap-2 flex-wrap">
-                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-semibold bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800">
-                  <Sparkles size={12} className="text-emerald-500" />
+                <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-[#e8ecde] dark:bg-[#20261b] text-[#656d4a] dark:text-[#d3dbc3] border border-[#d3dbc3] dark:border-[#333d29]">
+                  <Sparkles size={12} className="text-[#656d4a] dark:text-[#a4ac86]" />
                   <span>Sedang Dikerjakan</span>
                 </span>
                 {currentTask.category && (
-                  <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-300">
+                  <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-[#e8ecde]/60 dark:bg-[#20261b] text-[#414833] dark:text-[#d3dbc3] border border-[#d3dbc3] dark:border-[#333d29]">
                     <Tag size={11} />
                     <span>{currentTask.category}</span>
                   </span>
                 )}
               </div>
 
-              <h1 className="text-2xl sm:text-3xl md:text-4xl font-black text-neutral-900 dark:text-white tracking-tight leading-snug">
+              <h1 className="text-2xl sm:text-3xl md:text-4xl font-black text-[#333d29] dark:text-[#f5f7f1] tracking-tight leading-snug">
                 {currentTask.title}
               </h1>
 
               {currentTask.description && (
-                <p className="text-sm text-neutral-600 dark:text-neutral-400 max-w-lg mx-auto leading-relaxed">
+                <p className="text-sm text-[#414833]/80 dark:text-[#d3dbc3]/80 max-w-lg mx-auto leading-relaxed">
                   {currentTask.description}
                 </p>
               )}
@@ -218,14 +218,14 @@ export function FocusWorkspace({ initialTasks, initialTaskId }: FocusWorkspacePr
             {/* Timer Display */}
             <div className="space-y-4">
               {/* Timer Mode Pills */}
-              <div className="inline-flex items-center gap-1 p-1 rounded-xl bg-neutral-100 dark:bg-neutral-800/80 border border-neutral-200/60 dark:border-neutral-700/60 text-xs font-medium">
+              <div className="inline-flex items-center gap-1 p-1 rounded-xl bg-[#e8ecde]/60 dark:bg-[#20261b] border border-[#d3dbc3] dark:border-[#333d29] text-xs font-medium">
                 <button
                   type="button"
                   onClick={() => switchMode("pomodoro")}
                   className={`px-3 py-1.5 rounded-lg transition-all press-scale ${
                     timerMode === "pomodoro"
-                      ? "bg-white dark:bg-neutral-900 font-bold shadow-xs text-neutral-900 dark:text-white"
-                      : "text-neutral-500 hover:text-neutral-900 dark:hover:text-white"
+                      ? "bg-[#333d29] text-[#f5f7f1] dark:bg-[#f5f7f1] dark:text-[#333d29] font-bold shadow-xs"
+                      : "text-[#656d4a] hover:text-[#333d29] dark:text-[#a4ac86] dark:hover:text-white"
                   }`}
                 >
                   Pomodoro (25m)
@@ -235,8 +235,8 @@ export function FocusWorkspace({ initialTasks, initialTaskId }: FocusWorkspacePr
                   onClick={() => switchMode("deep")}
                   className={`px-3 py-1.5 rounded-lg transition-all press-scale ${
                     timerMode === "deep"
-                      ? "bg-white dark:bg-neutral-900 font-bold shadow-xs text-neutral-900 dark:text-white"
-                      : "text-neutral-500 hover:text-neutral-900 dark:hover:text-white"
+                      ? "bg-[#333d29] text-[#f5f7f1] dark:bg-[#f5f7f1] dark:text-[#333d29] font-bold shadow-xs"
+                      : "text-[#656d4a] hover:text-[#333d29] dark:text-[#a4ac86] dark:hover:text-white"
                   }`}
                 >
                   Deep Work (50m)
@@ -246,8 +246,8 @@ export function FocusWorkspace({ initialTasks, initialTaskId }: FocusWorkspacePr
                   onClick={() => switchMode("stopwatch")}
                   className={`px-3 py-1.5 rounded-lg transition-all press-scale ${
                     timerMode === "stopwatch"
-                      ? "bg-white dark:bg-neutral-900 font-bold shadow-xs text-neutral-900 dark:text-white"
-                      : "text-neutral-500 hover:text-neutral-900 dark:hover:text-white"
+                      ? "bg-[#333d29] text-[#f5f7f1] dark:bg-[#f5f7f1] dark:text-[#333d29] font-bold shadow-xs"
+                      : "text-[#656d4a] hover:text-[#333d29] dark:text-[#a4ac86] dark:hover:text-white"
                   }`}
                 >
                   Stopwatch
@@ -255,13 +255,13 @@ export function FocusWorkspace({ initialTasks, initialTaskId }: FocusWorkspacePr
               </div>
 
               {/* Big Timer Digits */}
-              <div className="font-mono text-6xl sm:text-7xl md:text-8xl font-black text-neutral-900 dark:text-white tracking-tighter tabular-nums select-none">
+              <div className="font-mono text-6xl sm:text-7xl md:text-8xl font-black text-[#333d29] dark:text-[#f5f7f1] tracking-tighter tabular-nums select-none">
                 {formatTime(timeLeft)}
               </div>
 
               {/* Finished Celebration Banner */}
               {hasFinished && (
-                <div className="p-3 rounded-2xl bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-300 dark:border-emerald-700 text-emerald-800 dark:text-emerald-200 text-xs sm:text-sm font-semibold animate-pulse">
+                <div className="p-3 rounded-2xl bg-[#e8ecde] dark:bg-[#20261b] border border-[#a4ac86] dark:border-[#656d4a] text-[#333d29] dark:text-[#f5f7f1] text-xs sm:text-sm font-semibold animate-pulse">
                   🎉 Waktu sesi fokus habis! Kerja hebat. Ambil istirahat sejenak atau tandai tugas telah selesai di bawah.
                 </div>
               )}
@@ -271,10 +271,10 @@ export function FocusWorkspace({ initialTasks, initialTaskId }: FocusWorkspacePr
                 <button
                   type="button"
                   onClick={() => setIsRunning(!isRunning)}
-                  className={`inline-flex items-center gap-2 px-6 py-3 rounded-2xl font-bold text-sm shadow-md transition-all press-scale ${
+                  className={`inline-flex items-center gap-2 px-6 py-3 rounded-2xl font-bold text-sm shadow-md transition-all press-scale cursor-pointer ${
                     isRunning
-                      ? "bg-amber-500 hover:bg-amber-600 text-white"
-                      : "bg-emerald-600 hover:bg-emerald-700 text-white"
+                      ? "bg-amber-600 hover:bg-amber-700 text-white"
+                      : "bg-[#333d29] hover:bg-[#414833] text-[#f5f7f1]"
                   }`}
                 >
                   {isRunning ? <Pause size={18} /> : <Play size={18} className="fill-white" />}
@@ -330,11 +330,11 @@ export function FocusWorkspace({ initialTasks, initialTaskId }: FocusWorkspacePr
             )}
 
             {/* Big Complete Button */}
-            <div className="pt-4 border-t border-neutral-100 dark:border-neutral-800">
+            <div className="pt-4 border-t border-[#d5dcce]/60 dark:border-[#333d29]/60">
               <button
                 type="button"
                 onClick={handleCompleteCurrentTask}
-                className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl font-bold text-xs sm:text-sm bg-neutral-900 hover:bg-neutral-800 text-white dark:bg-white dark:text-neutral-900 dark:hover:bg-neutral-100 transition-all press-scale shadow-sm"
+                className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl font-bold text-xs sm:text-sm bg-[#333d29] hover:bg-[#414833] text-[#f5f7f1] transition-all press-scale shadow-sm cursor-pointer"
               >
                 <Check size={16} className="stroke-[3]" />
                 <span>Tandai Tugas Ini Selesai ↵</span>
@@ -343,18 +343,18 @@ export function FocusWorkspace({ initialTasks, initialTaskId }: FocusWorkspacePr
           </>
         ) : (
           <div className="py-12 space-y-3">
-            <div className="w-14 h-14 rounded-2xl bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400 mx-auto flex items-center justify-center">
+            <div className="w-14 h-14 rounded-2xl bg-[#e8ecde] dark:bg-[#20261b] text-[#656d4a] dark:text-[#a4ac86] mx-auto flex items-center justify-center">
               <CheckCircle2 size={32} />
             </div>
-            <h3 className="text-lg font-bold text-neutral-900 dark:text-neutral-100">
+            <h3 className="text-lg font-bold text-[#333d29] dark:text-[#f5f7f1]">
               Tidak Ada Tugas Aktif untuk Difokuskan
             </h3>
-            <p className="text-xs text-neutral-500 max-w-sm mx-auto">
+            <p className="text-xs text-[#414833]/80 dark:text-[#d3dbc3]/80 max-w-sm mx-auto">
               Semua tugas sudah beres! Silakan tambahkan tugas baru di halaman Hari Ini.
             </p>
             <a
               href="/"
-              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-semibold bg-emerald-600 hover:bg-emerald-700 text-white transition-colors press-scale"
+              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-semibold bg-[#333d29] hover:bg-[#414833] text-[#f5f7f1] transition-colors press-scale"
             >
               <Clock size={14} />
               <span>Kembali ke Hari Ini</span>

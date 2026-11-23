@@ -140,17 +140,17 @@ export function CategoryWorkspace({ initialTasks }: CategoryWorkspaceProps) {
   return (
     <div className="w-full px-4 sm:px-6 lg:px-8 py-6 sm:py-8 space-y-8 animate-fade-in">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 pb-4 border-b border-neutral-200/60 dark:border-neutral-800/60">
+      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 pb-4 border-b border-[#d5dcce]/70 dark:border-[#333d29]/70">
         <div>
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800 mb-2">
-            <FolderKanban size={13} className="text-emerald-500" />
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-[#e8ecde] dark:bg-[#20261b] text-[#656d4a] dark:text-[#d3dbc3] border border-[#d3dbc3] dark:border-[#333d29] mb-2">
+            <FolderKanban size={13} className="text-[#656d4a] dark:text-[#a4ac86]" />
             <span>Pengorganisasian Tugas</span>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-black text-neutral-900 dark:text-white tracking-tight">
+          <h1 className="text-2xl sm:text-3xl font-black text-[#333d29] dark:text-[#f5f7f1] tracking-tight">
             Kategori &amp; Proyek
           </h1>
         </div>
-        <p className="text-xs sm:text-sm text-neutral-500 dark:text-neutral-400 max-w-md">
+        <p className="text-xs sm:text-sm text-[#414833]/80 dark:text-[#d3dbc3]/80 max-w-md">
           Kelola tugas berdasarkan domain kerja Anda. Pisahkan antara pekerjaan, proyek pribadi, dan rutinitas harian.
         </p>
       </div>
@@ -160,13 +160,13 @@ export function CategoryWorkspace({ initialTasks }: CategoryWorkspaceProps) {
         <button
           type="button"
           onClick={() => setSelectedCategory("all")}
-          className={`p-4 rounded-2xl border text-left transition-all press-scale ${
+          className={`p-4 rounded-2xl border text-left transition-all press-scale cursor-pointer ${
             selectedCategory === "all"
-              ? "bg-neutral-900 text-white dark:bg-white dark:text-neutral-900 border-neutral-900 dark:border-white shadow-md font-bold"
-              : "bg-white dark:bg-neutral-900 border-neutral-200 dark:border-neutral-800 text-neutral-900 dark:text-neutral-100 hover:border-neutral-300"
+              ? "bg-[#333d29] text-[#f5f7f1] dark:bg-[#f5f7f1] dark:text-[#333d29] border-[#333d29] dark:border-white shadow-md font-bold"
+              : "bg-white dark:bg-[#20261b] border-[#d5dcce] dark:border-[#333d29] text-[#333d29] dark:text-[#f5f7f1] hover:border-[#a4ac86]"
           }`}
         >
-          <div className="text-xs text-neutral-400 dark:text-neutral-500 mb-1">Semua Domain</div>
+          <div className="text-xs text-[#656d4a] dark:text-[#a4ac86] mb-1">Semua Domain</div>
           <div className="text-lg font-black">Semua Tugas</div>
           <div className="text-xs mt-2 opacity-80">{tasks.length} tugas total</div>
         </button>
@@ -176,13 +176,13 @@ export function CategoryWorkspace({ initialTasks }: CategoryWorkspaceProps) {
             key={cat.name}
             type="button"
             onClick={() => setSelectedCategory(cat.name)}
-            className={`p-4 rounded-2xl border text-left transition-all press-scale ${
+            className={`p-4 rounded-2xl border text-left transition-all press-scale cursor-pointer ${
               selectedCategory === cat.name
-                ? "bg-neutral-900 text-white dark:bg-white dark:text-neutral-900 border-neutral-900 dark:border-white shadow-md font-bold"
-                : "bg-white dark:bg-neutral-900 border-neutral-200 dark:border-neutral-800 text-neutral-900 dark:text-neutral-100 hover:border-neutral-300"
+                ? "bg-[#333d29] text-[#f5f7f1] dark:bg-[#f5f7f1] dark:text-[#333d29] border-[#333d29] dark:border-white shadow-md font-bold"
+                : "bg-white dark:bg-[#20261b] border-[#d5dcce] dark:border-[#333d29] text-[#333d29] dark:text-[#f5f7f1] hover:border-[#a4ac86]"
             }`}
           >
-            <div className="text-xs text-neutral-400 dark:text-neutral-500 mb-1">Kategori</div>
+            <div className="text-xs text-[#656d4a] dark:text-[#a4ac86] mb-1">Kategori</div>
             <div className="text-lg font-black truncate">{cat.name}</div>
             <div className="text-xs mt-2 opacity-80">
               {cat.completed}/{cat.total} beres ({cat.percentage}%)
@@ -192,18 +192,18 @@ export function CategoryWorkspace({ initialTasks }: CategoryWorkspaceProps) {
       </div>
 
       {/* Quick Add Input inside Active Category */}
-      <form onSubmit={handleQuickAdd} className="flex items-center gap-2 p-2 rounded-2xl bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 shadow-xs">
+      <form onSubmit={handleQuickAdd} className="flex items-center gap-2 p-2 rounded-2xl bg-white dark:bg-[#20261b] border border-[#d5dcce] dark:border-[#333d29] shadow-xs">
         <input
           type="text"
           value={quickTitle}
           onChange={(e) => setQuickTitle(e.target.value)}
           placeholder={`Tambah tugas langsung ke ${selectedCategory === "all" ? "Umum" : `#${selectedCategory}`}...`}
-          className="flex-1 px-3 py-2 text-sm bg-transparent text-neutral-900 dark:text-neutral-100 placeholder-neutral-400 focus:outline-none"
+          className="flex-1 px-3 py-2 text-sm bg-transparent text-[#333d29] dark:text-[#f5f7f1] placeholder-[#414833]/50 focus:outline-none"
         />
         <button
           type="submit"
           disabled={!quickTitle.trim()}
-          className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-semibold bg-emerald-600 hover:bg-emerald-700 text-white disabled:opacity-40 transition-colors press-scale"
+          className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-semibold bg-[#333d29] hover:bg-[#414833] text-[#f5f7f1] disabled:opacity-40 transition-colors press-scale cursor-pointer"
         >
           <Plus size={14} />
           <span>Tambah</span>
