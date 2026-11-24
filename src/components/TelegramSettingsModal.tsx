@@ -216,7 +216,7 @@ export function TelegramSettingsModal({ isOpen, onClose, user }: TelegramSetting
         {/* Scrollable Body */}
         <div className="p-6 overflow-y-auto space-y-5">
           {/* Quick Guide Card */}
-          <div className="p-4 rounded-xl bg-[#e8ecde]/60 dark:bg-[#20261b] border border-[#d3dbc3] dark:border-[#333d29] text-xs text-[#333d29] dark:text-[#f5f7f1] space-y-2">
+          <div className="p-4 rounded-xl bg-[#e8ecde]/60 dark:bg-[#20261b] border border-[#d3dbc3] dark:border-[#333d29] text-xs text-[#333d29] dark:text-[#f5f7f1] space-y-3">
             <div className="flex items-center justify-between font-bold">
               <span>Langkah Menghubungkan:</span>
               <a
@@ -237,6 +237,16 @@ export function TelegramSettingsModal({ isOpen, onClose, user }: TelegramSetting
                 Dapatkan ID Telegram Anda (misal via bot <code>@userinfobot</code>) lalu masukkan nomor ID tersebut di bawah.
               </li>
             </ol>
+            <div className="pt-2 border-t border-[#d3dbc3]/60 dark:border-[#333d29]/60 text-[11px] text-[#414833]/90 dark:text-[#d3dbc3]/90">
+              <span className="font-semibold text-[#333d29] dark:text-[#f5f7f1] block mb-1">
+                ⚡ Fitur Bot Interaktif Dua Arah:
+              </span>
+              <ul className="list-disc list-inside space-y-0.5">
+                <li>Ketik langsung tugas di chat bot atau gunakan <code>/tambah &lt;tugas&gt;</code></li>
+                <li>Ketik <code>/today</code> untuk melihat tugas aktif hari ini</li>
+                <li>Klik tombol <code>[✅ Selesai]</code> di chat Telegram untuk menyelesaikan tugas instan</li>
+              </ul>
+            </div>
           </div>
 
           {/* Form */}
