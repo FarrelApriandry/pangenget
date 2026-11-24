@@ -27,6 +27,10 @@ const currentPath = Astro.url.pathname;
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
     <meta name="theme-color" content="#333d29" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="Pangenget" />
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
     <meta name="description" content={description} />
@@ -39,12 +43,21 @@ const currentPath = Astro.url.pathname;
       } else {
         document.documentElement.classList.remove("dark");
       }
+
+      // Register Service Worker for PWA
+      if ('serviceWorker' in navigator && window.location.protocol.startsWith('http')) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/sw.js').catch((err) => {
+            console.warn('Service Worker registration note:', err);
+          });
+        });
+      }
     </script>
   </head>
   <body class="bg-[#f7f8f4] dark:bg-[#161a12] text-[#333d29] dark:text-[#f5f7f1] flex flex-col min-h-screen">
     <Navbar client:load siteName="Pangenget" currentPath={currentPath} />
 
-    <main class="flex-1 pb-24 sm:pb-16">
+    <main class="flex-1 w-full max-w-6xl xl:max-w-7xl mx-auto pb-24 sm:pb-16 transition-all">
       <slot />
     </main>
 

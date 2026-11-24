@@ -8,6 +8,7 @@ import {
   editTelegramMessageText,
 } from "../../../lib/telegram";
 import { parseNaturalLanguageTask } from "../../../utils/nlpParser";
+import { calculateNextDueDate } from "../../../utils/recurring";
 
 function escapeHtml(text: string): string {
   return text
@@ -60,6 +61,36 @@ export const POST: APIRoute = async ({ request }) => {
           })
           .where(eq(tasks.id, taskId));
 
+        // Check if recurring task
+        let nextRecurringNotice = "";
+        if (task.repeatType && task.repeatType !== "none") {
+          try {
+            const nextDueDate = calculateNextDueDate(task.dueDate, task.repeatType);
+            const resetSubtasks = Array.isArray(task.subtasks)
+              ? task.subtasks.map((s: any) => ({ ...s, isCompleted: false }))
+              : [];
+
+            await db.insert(tasks).values({
+              userId: task.userId,
+              title: task.title,
+              description: task.description,
+              priority: task.priority,
+              category: task.category,
+              repeatType: task.repeatType,
+              dueDate: nextDueDate,
+              subtasks: resetSubtasks,
+              isPinned: task.isPinned,
+              isCompleted: false,
+              telegramReminded24h: false,
+              telegramReminded1h: false,
+            });
+
+            nextRecurringNotice = "\n🔁 <i>Tugas rutin berikutnya otomatis dijadwalkan ulang!</i>";
+          } catch (rErr) {
+            console.error("Gagal create next recurring in webhook:", rErr);
+          }
+        }
+
         await answerCallbackQuery(cq.id, "🎉 Mantap! Tugas berhasil diselesaikan.");
 
         // Edit pesan di Telegram agar mencerminkan status selesai
@@ -67,7 +98,7 @@ export const POST: APIRoute = async ({ request }) => {
         const updatedMessage = `
 <s>${escapeHtml(originalText)}</s>
 
-✅ <b>Telah diselesaikan via Telegram!</b>
+✅ <b>Telah diselesaikan via Telegram!</b>${nextRecurringNotice}
 ⚡ <i>Fokus, Kerjakan, Bereskan.</i>
         `.trim();
 
@@ -326,6 +357,18 @@ Bot secara otomatis mengenali prioritas, kategori, dan tenggat waktu:
         return new Response(JSON.stringify({ ok: true }), { status: 200 });
       }
 
+      // Detect repeat type in text
+      let repeatType: "none" | "daily" | "weekdays" | "weekly" | "monthly" = "none";
+      if (/!(harian|daily|tiap-hari)\b/i.test(taskInputText)) {
+        repeatType = "daily";
+      } else if (/!(hari-kerja|weekdays)\b/i.test(taskInputText)) {
+        repeatType = "weekdays";
+      } else if (/!(mingguan|weekly|tiap-minggu)\b/i.test(taskInputText)) {
+        repeatType = "weekly";
+      } else if (/!(bulanan|monthly|tiap-bulan)\b/i.test(taskInputText)) {
+        repeatType = "monthly";
+      }
+
       // Jalankan NLP Parser
       const parsed = parseNaturalLanguageTask(taskInputText);
       const title = parsed.cleanTitle || taskInputText;
@@ -342,6 +385,7 @@ Bot secara otomatis mengenali prioritas, kategori, dan tenggat waktu:
           description: null,
           priority,
           category,
+          repeatType,
           dueDate,
           isCompleted: false,
           isPinned: false,

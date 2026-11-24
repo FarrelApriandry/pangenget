@@ -12,9 +12,11 @@ import {
   ChevronDown,
   ChevronUp,
   Plus,
+  Repeat,
   Sparkles,
   Target,
 } from "lucide-react";
+import { getRepeatLabel } from "../utils/recurring";
 
 interface TaskItemProps {
   task: Task;
@@ -41,6 +43,7 @@ export function TaskItem({
   const [editDescription, setEditDescription] = useState(task.description || "");
   const [editPriority, setEditPriority] = useState<string>(task.priority);
   const [editCategory, setEditCategory] = useState<string>(task.category);
+  const [editRepeatType, setEditRepeatType] = useState<string>(task.repeatType || "none");
   const [editDueDate, setEditDueDate] = useState<string>(
     task.dueDate ? new Date(task.dueDate).toISOString().slice(0, 10) : ""
   );
@@ -60,6 +63,7 @@ export function TaskItem({
       description: editDescription.trim() || null,
       priority: editPriority as any,
       category: finalCategory,
+      repeatType: editRepeatType as any,
       dueDate: editDueDate ? new Date(editDueDate) : null,
     });
     setIsEditing(false);
@@ -70,6 +74,7 @@ export function TaskItem({
     setEditDescription(task.description || "");
     setEditPriority(task.priority);
     setEditCategory(task.category);
+    setEditRepeatType(task.repeatType || "none");
     setEditDueDate(task.dueDate ? new Date(task.dueDate).toISOString().slice(0, 10) : "");
     setIsEditing(false);
   };
@@ -184,7 +189,7 @@ export function TaskItem({
             />
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5 lg:gap-3">
             <div>
               <label className="block text-xs font-semibold text-[#656d4a] dark:text-[#a4ac86] mb-1">
                 Prioritas
@@ -192,12 +197,12 @@ export function TaskItem({
               <select
                 value={editPriority}
                 onChange={(e) => setEditPriority(e.target.value)}
-                className="w-full px-2.5 py-1.5 text-xs rounded-lg border border-[#d5dcce] dark:border-[#333d29] bg-white dark:bg-[#293121] text-[#333d29] dark:text-[#f5f7f1] focus:outline-none focus:ring-2 focus:ring-[#656d4a]"
+                className="w-full px-2.5 py-1.5 lg:py-2 text-xs lg:text-sm rounded-lg border border-[#d5dcce] dark:border-[#333d29] bg-white dark:bg-[#293121] text-[#333d29] dark:text-[#f5f7f1] focus:outline-none focus:ring-2 focus:ring-[#656d4a]"
               >
-                <option value="urgent">Urgent</option>
-                <option value="high">Tinggi</option>
-                <option value="medium">Sedang</option>
-                <option value="low">Rendah</option>
+                <option value="urgent">🔴 Urgent</option>
+                <option value="high">🟠 Tinggi</option>
+                <option value="medium">🔵 Sedang</option>
+                <option value="low">⚪ Rendah</option>
               </select>
             </div>
 
@@ -216,7 +221,7 @@ export function TaskItem({
               <select
                 value={editCategory || "Semua Tugas"}
                 onChange={(e) => setEditCategory(e.target.value)}
-                className="w-full px-2.5 py-1.5 text-xs rounded-lg border border-[#d5dcce] dark:border-[#333d29] bg-white dark:bg-[#293121] text-[#333d29] dark:text-[#f5f7f1] focus:outline-none focus:ring-2 focus:ring-[#656d4a] cursor-pointer"
+                className="w-full px-2.5 py-1.5 lg:py-2 text-xs lg:text-sm rounded-lg border border-[#d5dcce] dark:border-[#333d29] bg-white dark:bg-[#293121] text-[#333d29] dark:text-[#f5f7f1] focus:outline-none focus:ring-2 focus:ring-[#656d4a] cursor-pointer"
               >
                 <option value="Semua Tugas">Semua Tugas (Default)</option>
                 {Array.from(new Set([...availableCategories, editCategory]))
@@ -231,13 +236,30 @@ export function TaskItem({
 
             <div>
               <label className="block text-xs font-semibold text-[#656d4a] dark:text-[#a4ac86] mb-1">
+                Ulangi (Rutin)
+              </label>
+              <select
+                value={editRepeatType}
+                onChange={(e) => setEditRepeatType(e.target.value)}
+                className="w-full px-2.5 py-1.5 lg:py-2 text-xs lg:text-sm rounded-lg border border-[#d5dcce] dark:border-[#333d29] bg-white dark:bg-[#293121] text-[#333d29] dark:text-[#f5f7f1] focus:outline-none focus:ring-2 focus:ring-[#656d4a] cursor-pointer"
+              >
+                <option value="none">Tidak Berulang</option>
+                <option value="daily">🔁 Setiap Hari (Harian)</option>
+                <option value="weekdays">💼 Hari Kerja (Senin–Jumat)</option>
+                <option value="weekly">📅 Setiap Minggu (Mingguan)</option>
+                <option value="monthly">🗓️ Setiap Bulan (Bulanan)</option>
+              </select>
+            </div>
+
+            <div>
+              <label className="block text-xs font-semibold text-[#656d4a] dark:text-[#a4ac86] mb-1">
                 Batas Waktu (Due Date)
               </label>
               <input
                 type="date"
                 value={editDueDate}
                 onChange={(e) => setEditDueDate(e.target.value)}
-                className="w-full px-2.5 py-1.5 text-xs rounded-lg border border-[#d5dcce] dark:border-[#333d29] bg-white dark:bg-[#293121] text-[#333d29] dark:text-[#f5f7f1] focus:outline-none focus:ring-2 focus:ring-[#656d4a]"
+                className="w-full px-2.5 py-1.5 lg:py-2 text-xs lg:text-sm rounded-lg border border-[#d5dcce] dark:border-[#333d29] bg-white dark:bg-[#293121] text-[#333d29] dark:text-[#f5f7f1] focus:outline-none focus:ring-2 focus:ring-[#656d4a]"
               />
             </div>
           </div>
@@ -264,7 +286,7 @@ export function TaskItem({
 
   return (
     <div
-      className={`group relative p-3.5 sm:p-4 rounded-xl border transition-all duration-200 animate-entrance ${
+      className={`group relative p-3.5 sm:p-4 lg:p-5 rounded-xl lg:rounded-2xl border transition-all duration-200 animate-entrance ${
         task.isCompleted
           ? "bg-[#e8ecde]/30 dark:bg-[#20261b]/40 border-[#d5dcce]/60 dark:border-[#333d29]/60 opacity-80"
           : task.isPinned
@@ -272,26 +294,26 @@ export function TaskItem({
           : "bg-white dark:bg-[#20261b] border-[#d5dcce] dark:border-[#333d29] hover:border-[#a4ac86] dark:hover:border-[#656d4a] shadow-xs"
       }`}
     >
-      <div className="flex items-start gap-3">
+      <div className="flex items-start gap-3 sm:gap-3.5 lg:gap-4">
         {/* Main Checkbox */}
         <button
           type="button"
           onClick={() => onToggleComplete(task.id, task.isCompleted)}
           aria-label={task.isCompleted ? "Tandai belum selesai" : "Tandai selesai"}
-          className={`mt-0.5 w-5 h-5 rounded-md flex items-center justify-center transition-all press-scale shrink-0 cursor-pointer ${
+          className={`mt-0.5 w-5 h-5 sm:w-5.5 sm:h-5.5 lg:w-6 lg:h-6 rounded-md lg:rounded-lg flex items-center justify-center transition-all press-scale shrink-0 cursor-pointer ${
             task.isCompleted
               ? "bg-[#656d4a] text-white border border-[#656d4a] shadow-xs"
               : "border-2 border-[#d5dcce] dark:border-[#414833] hover:border-[#656d4a] dark:hover:border-[#a4ac86] bg-transparent"
           }`}
         >
-          {task.isCompleted && <Check size={14} className="stroke-[3]" />}
+          {task.isCompleted && <Check size={14} className="stroke-[3] lg:scale-110" />}
         </button>
 
         {/* Task Body */}
         <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-2 flex-wrap">
+          <div className="flex items-center gap-2 lg:gap-2.5 flex-wrap">
             <span
-              className={`text-sm sm:text-base font-medium break-words leading-snug transition-all ${
+              className={`text-sm sm:text-base lg:text-lg font-medium lg:font-semibold break-words leading-snug transition-all ${
                 task.isCompleted
                   ? "line-through text-neutral-400 dark:text-neutral-500"
                   : "text-neutral-900 dark:text-neutral-100"
@@ -302,7 +324,7 @@ export function TaskItem({
 
             {/* Priority Badge */}
             <span
-              className={`inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-semibold border ${priorityMeta.badge}`}
+              className={`inline-flex items-center gap-1 px-1.5 py-0.5 lg:px-2.5 lg:py-1 rounded text-[10px] sm:text-xs lg:text-xs font-semibold border ${priorityMeta.badge}`}
             >
               <span className={`w-1.5 h-1.5 rounded-full ${priorityMeta.dot}`} />
               <span>{priorityMeta.label}</span>
@@ -310,16 +332,24 @@ export function TaskItem({
 
             {/* Category Tag */}
             {task.category && task.category !== "Semua Tugas" && task.category !== "Umum" && (
-              <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-medium bg-[#e8ecde] dark:bg-[#20261b] text-[#656d4a] dark:text-[#d3dbc3] border border-[#d3dbc3] dark:border-[#333d29]">
-                <Tag size={10} />
+              <span className="inline-flex items-center gap-1 px-1.5 py-0.5 lg:px-2.5 lg:py-1 rounded text-[10px] sm:text-xs lg:text-xs font-medium bg-[#e8ecde] dark:bg-[#20261b] text-[#656d4a] dark:text-[#d3dbc3] border border-[#d3dbc3] dark:border-[#333d29]">
+                <Tag size={10} className="lg:w-3 lg:h-3" />
                 <span>{task.category}</span>
+              </span>
+            )}
+
+            {/* Recurring Task Badge */}
+            {task.repeatType && task.repeatType !== "none" && (
+              <span className="inline-flex items-center gap-1 px-1.5 py-0.5 lg:px-2.5 lg:py-1 rounded text-[10px] sm:text-xs lg:text-xs font-semibold bg-[#e8ecde] text-[#414833] dark:bg-[#20261b] dark:text-[#d3dbc3] border border-[#d3dbc3] dark:border-[#333d29]">
+                <Repeat size={10} className="text-[#656d4a] dark:text-[#a4ac86] lg:w-3 lg:h-3" />
+                <span>{getRepeatLabel(task.repeatType)}</span>
               </span>
             )}
 
             {/* Due Date Badge */}
             {dueInfo && (
               <span
-                className={`inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-medium border ${
+                className={`inline-flex items-center gap-1 px-1.5 py-0.5 lg:px-2.5 lg:py-1 rounded text-[10px] sm:text-xs lg:text-xs font-medium border ${
                   dueInfo.isOverdue
                     ? "bg-rose-50 text-rose-700 dark:bg-rose-950/40 dark:text-rose-400 border-rose-200 dark:border-rose-900/60 font-semibold"
                     : dueInfo.isToday
@@ -327,7 +357,7 @@ export function TaskItem({
                     : "bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-400 border-neutral-200/60 dark:border-neutral-700/60"
                 }`}
               >
-                {dueInfo.isOverdue ? <AlertCircle size={10} /> : <Calendar size={10} />}
+                {dueInfo.isOverdue ? <AlertCircle size={10} className="lg:w-3 lg:h-3" /> : <Calendar size={10} className="lg:w-3 lg:h-3" />}
                 <span>{dueInfo.label}</span>
               </span>
             )}
@@ -337,7 +367,7 @@ export function TaskItem({
               <button
                 type="button"
                 onClick={() => setShowSubtasks(!showSubtasks)}
-                className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold border transition-colors press-scale ${
+                className={`inline-flex items-center gap-1 px-2 py-0.5 lg:px-2.5 lg:py-1 rounded-full text-[10px] sm:text-xs lg:text-xs font-semibold border transition-colors press-scale cursor-pointer ${
                   allSubtasksDone
                     ? "bg-[#e8ecde] dark:bg-[#20261b] text-[#656d4a] dark:text-[#d3dbc3] border-[#d3dbc3] dark:border-[#333d29]"
                     : "bg-[#e8ecde]/50 dark:bg-[#20261b]/60 text-[#414833] dark:text-[#d3dbc3] border-[#d5dcce] dark:border-[#333d29]"
@@ -356,7 +386,7 @@ export function TaskItem({
           {/* Description if any */}
           {task.description && (
             <p
-              className={`text-xs mt-1 text-[#414833] dark:text-[#d3dbc3] whitespace-pre-wrap leading-relaxed ${
+              className={`text-xs sm:text-sm lg:text-[15px] mt-1.5 text-[#414833] dark:text-[#d3dbc3] whitespace-pre-wrap leading-relaxed ${
                 task.isCompleted ? "line-through opacity-60" : ""
               }`}
             >
@@ -476,15 +506,15 @@ export function TaskItem({
         </div>
 
         {/* Actions cluster */}
-        <div className="flex items-center gap-1 shrink-0">
+        <div className="flex items-center gap-1 sm:gap-1.5 shrink-0">
           {/* Quick Focus Button (for active tasks) */}
           {!task.isCompleted && (
             <a
               href={`/fokus?taskId=${task.id}`}
-              className="p-1.5 rounded-lg text-neutral-400 hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-emerald-950/40 transition-colors press-scale opacity-80 group-hover:opacity-100"
+              className="p-1.5 sm:p-2 rounded-lg text-neutral-400 hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-emerald-950/40 transition-colors press-scale opacity-80 group-hover:opacity-100"
               title="Fokus kerjakan tugas ini (Mode Zen / Timer)"
             >
-              <Target size={15} />
+              <Target size={16} className="lg:w-4.5 lg:h-4.5" />
             </a>
           )}
 
@@ -493,7 +523,7 @@ export function TaskItem({
             type="button"
             onClick={() => onTogglePin(task.id, task.isPinned)}
             aria-label={task.isPinned ? "Lepas pin" : "Sematkan tugas"}
-            className={`p-1.5 rounded-lg transition-colors press-scale ${
+            className={`p-1.5 sm:p-2 rounded-lg transition-colors press-scale cursor-pointer ${
               task.isPinned
                 ? "text-amber-500 hover:text-amber-600 bg-amber-50 dark:bg-amber-950/30"
                 : "text-neutral-300 dark:text-neutral-600 hover:text-amber-500 hover:bg-neutral-100 dark:hover:bg-neutral-800"
@@ -501,7 +531,7 @@ export function TaskItem({
           >
             <Star
               size={16}
-              className={task.isPinned ? "fill-amber-500" : ""}
+              className={`lg:w-4.5 lg:h-4.5 ${task.isPinned ? "fill-amber-500" : ""}`}
             />
           </button>
 
@@ -510,9 +540,9 @@ export function TaskItem({
             type="button"
             onClick={() => setIsEditing(true)}
             aria-label="Edit tugas"
-            className="p-1.5 rounded-lg text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-200 hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors press-scale opacity-80 group-hover:opacity-100"
+            className="p-1.5 sm:p-2 rounded-lg text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-200 hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors press-scale opacity-80 group-hover:opacity-100 cursor-pointer"
           >
-            <Edit3 size={15} />
+            <Edit3 size={16} className="lg:w-4.5 lg:h-4.5" />
           </button>
 
           {/* Delete Button */}
@@ -520,9 +550,9 @@ export function TaskItem({
             type="button"
             onClick={() => onDelete(task.id)}
             aria-label="Hapus tugas"
-            className="p-1.5 rounded-lg text-neutral-400 hover:text-rose-600 dark:hover:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40 transition-colors press-scale opacity-80 group-hover:opacity-100"
+            className="p-1.5 sm:p-2 rounded-lg text-neutral-400 hover:text-rose-600 dark:hover:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40 transition-colors press-scale opacity-80 group-hover:opacity-100 cursor-pointer"
           >
-            <Trash2 size={15} />
+            <Trash2 size={16} className="lg:w-4.5 lg:h-4.5" />
           </button>
         </div>
       </div>

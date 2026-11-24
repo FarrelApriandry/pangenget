@@ -319,6 +319,7 @@ export function CalendarWorkspace({
       id: tempId,
       userId: null,
       ...payload,
+      repeatType: "none",
       isCompleted: false,
       completedAt: null,
       telegramReminded24h: false,
@@ -371,17 +372,17 @@ export function CalendarWorkspace({
   return (
     <div className="w-full px-4 sm:px-6 lg:px-8 py-6 sm:py-8 space-y-6">
       {/* Top Header Hero */}
-      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 pb-4 border-b border-[#d5dcce]/70 dark:border-[#333d29]/70">
+      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 pb-4 sm:pb-6 border-b border-[#d5dcce]/70 dark:border-[#333d29]/70">
         <div>
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-[#d3dbc3] dark:border-[#333d29] bg-[#e8ecde] dark:bg-[#20261b] text-[#656d4a] dark:text-[#d3dbc3] text-xs font-semibold mb-2">
-            <CalendarIcon size={13} className="text-[#656d4a] dark:text-[#a4ac86]" />
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-[#d3dbc3] dark:border-[#333d29] bg-[#e8ecde] dark:bg-[#20261b] text-[#656d4a] dark:text-[#d3dbc3] text-xs lg:text-sm font-semibold mb-2">
+            <CalendarIcon size={14} className="text-[#656d4a] dark:text-[#a4ac86]" />
             <span>Workspace Kalender &amp; Linimasa</span>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-black text-[#333d29] dark:text-[#f5f7f1] tracking-tight">
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black text-[#333d29] dark:text-[#f5f7f1] tracking-tight">
             Jadwal &amp; Tenggat Tugas
           </h1>
         </div>
-        <p className="text-[#414833]/80 dark:text-[#d3dbc3]/80 text-xs sm:text-sm max-w-md">
+        <p className="text-[#414833]/80 dark:text-[#d3dbc3]/80 text-xs sm:text-sm lg:text-base max-w-lg">
           Pantau distribusi beban harian dan tenggat tugas Anda secara visual untuk mencegah penumpukan pekerjaan.
         </p>
       </div>

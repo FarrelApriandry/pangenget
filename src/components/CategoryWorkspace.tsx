@@ -223,6 +223,7 @@ export function CategoryWorkspace({ initialTasks, initialCategories = [] }: Cate
       userId: null,
       ...payload,
       description: null,
+      repeatType: "none",
       isCompleted: false,
       isPinned: false,
       subtasks: [],
@@ -255,17 +256,17 @@ export function CategoryWorkspace({ initialTasks, initialCategories = [] }: Cate
   return (
     <div className="w-full px-4 sm:px-6 lg:px-8 py-6 sm:py-8 space-y-8 animate-fade-in">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 pb-4 border-b border-[#d5dcce]/70 dark:border-[#333d29]/70">
+      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 pb-4 sm:pb-6 border-b border-[#d5dcce]/70 dark:border-[#333d29]/70">
         <div>
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-[#e8ecde] dark:bg-[#20261b] text-[#656d4a] dark:text-[#d3dbc3] border border-[#d3dbc3] dark:border-[#333d29] mb-2">
-            <FolderKanban size={13} className="text-[#656d4a] dark:text-[#a4ac86]" />
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs lg:text-sm font-semibold bg-[#e8ecde] dark:bg-[#20261b] text-[#656d4a] dark:text-[#d3dbc3] border border-[#d3dbc3] dark:border-[#333d29] mb-2">
+            <FolderKanban size={14} className="text-[#656d4a] dark:text-[#a4ac86]" />
             <span>Manajemen Kategori &amp; Proyek</span>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-black text-[#333d29] dark:text-[#f5f7f1] tracking-tight">
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black text-[#333d29] dark:text-[#f5f7f1] tracking-tight">
             Kategori &amp; Proyek
           </h1>
         </div>
-        <p className="text-xs sm:text-sm text-[#414833]/80 dark:text-[#d3dbc3]/80 max-w-md">
+        <p className="text-xs sm:text-sm lg:text-base text-[#414833]/80 dark:text-[#d3dbc3]/80 max-w-lg">
           Buat dan kelola kategori baru di sini. Saat menambah tugas di halaman utama, Anda cukup memilih kategori dari dropdown (atau otomatis menjadi Semua Tugas jika tidak dipilih).
         </p>
       </div>

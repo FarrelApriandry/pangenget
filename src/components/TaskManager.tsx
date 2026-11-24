@@ -43,6 +43,7 @@ export function TaskManager({ initialTasks = [], initialCategories = [] }: TaskM
   const [newDescription, setNewDescription] = useState("");
   const [newPriority, setNewPriority] = useState<"low" | "medium" | "high" | "urgent">("medium");
   const [newCategory, setNewCategory] = useState("Semua Tugas");
+  const [newRepeatType, setNewRepeatType] = useState<"none" | "daily" | "weekdays" | "weekly" | "monthly">("none");
   const [newDueDate, setNewDueDate] = useState("");
   const [isExpanded, setIsExpanded] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -380,6 +381,7 @@ export function TaskManager({ initialTasks = [], initialCategories = [] }: TaskM
       description: newDescription.trim() || null,
       priority: finalPriority,
       category: finalCategory,
+      repeatType: newRepeatType,
       dueDate: finalDueDate,
       isPinned: false,
       subtasks: [],
@@ -403,6 +405,7 @@ export function TaskManager({ initialTasks = [], initialCategories = [] }: TaskM
     setNewTitle("");
     setNewDescription("");
     setNewCategory("Semua Tugas");
+    setNewRepeatType("none");
     setNewDueDate("");
     setIsExpanded(false);
 
@@ -460,6 +463,10 @@ export function TaskManager({ initialTasks = [], initialCategories = [] }: TaskM
         body: JSON.stringify({ isCompleted: next }),
       });
       if (!res.ok) throw new Error("Gagal memperbarui status tugas.");
+      const json = await res.json();
+      if (json.success && json.nextTask) {
+        setTasks((prev) => [json.nextTask, ...prev]);
+      }
     } catch (err) {
       setTasks((prev) =>
         prev.map((t) =>
@@ -644,16 +651,16 @@ export function TaskManager({ initialTasks = [], initialCategories = [] }: TaskM
       />
 
       {/* Quick Add Task Input Card with NLP & Voice Input */}
-      <div className="p-4 sm:p-5 rounded-2xl border border-[#d5dcce] dark:border-[#333d29] bg-white dark:bg-[#20261b] shadow-xs transition-all focus-within:border-[#656d4a] dark:focus-within:border-[#a4ac86]">
+      <div className="p-4 sm:p-5 lg:p-6 rounded-2xl lg:rounded-3xl border border-[#d5dcce] dark:border-[#333d29] bg-white dark:bg-[#20261b] shadow-xs transition-all focus-within:border-[#656d4a] dark:focus-within:border-[#a4ac86]">
         {errorMessage && (
-          <div className="mb-3 p-3 rounded-xl bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-800 text-xs text-rose-600 dark:text-rose-300 flex items-center gap-2">
+          <div className="mb-3 p-3 rounded-xl bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-800 text-xs sm:text-sm text-rose-600 dark:text-rose-300 flex items-center gap-2">
             <AlertTriangle size={15} />
             <span>{errorMessage}</span>
           </div>
         )}
 
-        <form onSubmit={handleCreateTask} className="space-y-3">
-          <div className="flex items-center gap-2">
+        <form onSubmit={handleCreateTask} className="space-y-3 lg:space-y-4">
+          <div className="flex items-center gap-2 sm:gap-3">
             <input
               ref={titleInputRef}
               type="text"
@@ -661,7 +668,7 @@ export function TaskManager({ initialTasks = [], initialCategories = [] }: TaskM
               onChange={(e) => setNewTitle(e.target.value)}
               onFocus={() => setIsExpanded(true)}
               placeholder="Tambahkan tugas... Contoh: Rapat tim besok jam 10 !urgent #kerja"
-              className="flex-1 text-sm sm:text-base bg-transparent text-[#333d29] dark:text-[#f5f7f1] placeholder-[#414833]/50 dark:placeholder-[#a4ac86]/50 focus:outline-none"
+              className="flex-1 text-sm sm:text-base lg:text-lg py-1 lg:py-2 bg-transparent text-[#333d29] dark:text-[#f5f7f1] placeholder-[#414833]/50 dark:placeholder-[#a4ac86]/50 focus:outline-none"
             />
 
             {/* Feature 6: Voice Input Button */}
@@ -669,26 +676,26 @@ export function TaskManager({ initialTasks = [], initialCategories = [] }: TaskM
               <button
                 type="button"
                 onClick={toggleVoiceInput}
-                className={`p-2 rounded-xl transition-all press-scale ${
+                className={`p-2 lg:p-2.5 rounded-xl transition-all press-scale cursor-pointer ${
                   isListening
                     ? "bg-rose-500 text-white animate-pulse shadow-md"
                     : "text-[#656d4a] hover:text-[#333d29] dark:text-[#a4ac86] dark:hover:text-white hover:bg-[#e8ecde]/60 dark:hover:bg-[#293121]"
                 }`}
                 title={isListening ? "Sedang mendengarkan... (klik untuk berhenti)" : "Bicara untuk mendikte tugas"}
               >
-                {isListening ? <Mic size={16} /> : <MicOff size={16} />}
+                {isListening ? <Mic size={18} /> : <MicOff size={18} />}
               </button>
             )}
 
             <button
               type="submit"
               disabled={!newTitle.trim() || isSubmitting}
-              className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold bg-[#333d29] hover:bg-[#414833] active:bg-[#293121] text-[#f5f7f1] disabled:opacity-40 disabled:pointer-events-none transition-all shadow-xs press-scale shrink-0 cursor-pointer"
+              className="inline-flex items-center gap-1.5 px-4 sm:px-5 lg:px-6 py-2.5 sm:py-3 lg:py-3 rounded-xl text-xs sm:text-sm lg:text-base font-bold bg-[#333d29] hover:bg-[#414833] active:bg-[#293121] text-[#f5f7f1] disabled:opacity-40 disabled:pointer-events-none transition-all shadow-xs press-scale shrink-0 cursor-pointer"
             >
               {isSubmitting ? (
-                <Loader2 size={15} className="animate-spin" />
+                <Loader2 size={16} className="animate-spin" />
               ) : (
-                <Plus size={15} />
+                <Plus size={16} />
               )}
               <span>Tambah</span>
             </button>
@@ -705,14 +712,14 @@ export function TaskManager({ initialTasks = [], initialCategories = [] }: TaskM
           {/* Feature 1: Live NLP Token Chips */}
           {parsedNLP.detectedTokens.length > 0 && (
             <div className="flex items-center gap-1.5 flex-wrap pt-1 text-xs animate-fade-in">
-              <span className="text-[11px] text-[#414833]/70 dark:text-[#a4ac86] flex items-center gap-1">
-                <Zap size={11} className="text-amber-500" />
+              <span className="text-[11px] sm:text-xs text-[#414833]/70 dark:text-[#a4ac86] flex items-center gap-1 font-semibold">
+                <Zap size={12} className="text-amber-500" />
                 Terdeteksi:
               </span>
               {parsedNLP.detectedTokens.map((tok, idx) => (
                 <span
                   key={idx}
-                  className={`px-2 py-0.5 rounded-full text-[11px] font-semibold border ${
+                  className={`px-2 py-0.5 rounded-full text-[11px] sm:text-xs font-semibold border ${
                     tok.type === "priority"
                       ? "bg-rose-50 text-rose-700 dark:bg-rose-950/40 dark:text-rose-300 border-rose-200 dark:border-rose-900"
                       : tok.type === "category"
@@ -726,29 +733,29 @@ export function TaskManager({ initialTasks = [], initialCategories = [] }: TaskM
             </div>
           )}
 
-          {/* Expandable Options (Priority, Category, Due Date, Notes) */}
+          {/* Expandable Options (Priority, Category, Due Date, Repeat, Notes) */}
           {isExpanded && (
-            <div className="pt-3 border-t border-neutral-100 dark:border-neutral-800 space-y-3 animate-fade-in text-xs">
+            <div className="pt-3 lg:pt-4 border-t border-neutral-100 dark:border-neutral-800 space-y-3 lg:space-y-4 animate-fade-in text-xs sm:text-sm">
               <div>
                 <textarea
                   value={newDescription}
                   onChange={(e) => setNewDescription(e.target.value)}
                   placeholder="Tambahkan catatan atau rincian tugas (opsional)..."
                   rows={2}
-                  className="w-full px-3 py-2 rounded-xl border border-neutral-200 dark:border-neutral-700 bg-neutral-50/60 dark:bg-neutral-800/40 text-neutral-900 dark:text-neutral-100 placeholder-neutral-400 focus:outline-none focus:ring-1 focus:ring-emerald-500 text-xs"
+                  className="w-full px-3 py-2 lg:px-4 lg:py-3 rounded-xl border border-neutral-200 dark:border-neutral-700 bg-neutral-50/60 dark:bg-neutral-800/40 text-neutral-900 dark:text-neutral-100 placeholder-neutral-400 focus:outline-none focus:ring-1 focus:ring-emerald-500 text-xs sm:text-sm lg:text-base"
                 />
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5 lg:gap-3.5">
                 {/* Priority Selection */}
                 <div>
-                  <label className="block text-[11px] font-medium text-neutral-500 dark:text-neutral-400 mb-1">
+                  <label className="block text-[11px] sm:text-xs lg:text-xs font-semibold text-neutral-500 dark:text-neutral-400 mb-1">
                     Prioritas {parsedNLP.priority && "(ditimpa oleh teks)"}
                   </label>
                   <select
                     value={parsedNLP.priority || newPriority}
                     onChange={(e) => setNewPriority(e.target.value as any)}
-                    className="w-full px-2.5 py-1.5 rounded-lg border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100 focus:outline-none"
+                    className="w-full px-2.5 py-1.5 lg:py-2 text-xs sm:text-sm rounded-lg border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100 focus:outline-none cursor-pointer"
                   >
                     <option value="urgent">🔴 Urgent (!urgent)</option>
                     <option value="high">🟠 Tinggi (!tinggi)</option>
@@ -760,12 +767,12 @@ export function TaskManager({ initialTasks = [], initialCategories = [] }: TaskM
                 {/* Category Selection Dropdown */}
                 <div>
                   <div className="flex items-center justify-between mb-1">
-                    <label className="block text-[11px] font-medium text-neutral-500 dark:text-neutral-400">
+                    <label className="block text-[11px] sm:text-xs lg:text-xs font-semibold text-neutral-500 dark:text-neutral-400">
                       Kategori {parsedNLP.category && "(ditimpa teks)"}
                     </label>
                     <a
                       href="/kategori"
-                      className="text-[10px] text-[#656d4a] dark:text-[#a4ac86] hover:underline font-semibold"
+                      className="text-[10px] sm:text-xs text-[#656d4a] dark:text-[#a4ac86] hover:underline font-semibold"
                       title="Kelola kategori di halaman khusus"
                     >
                       + Buat di /kategori
@@ -774,7 +781,7 @@ export function TaskManager({ initialTasks = [], initialCategories = [] }: TaskM
                   <select
                     value={parsedNLP.category || newCategory}
                     onChange={(e) => setNewCategory(e.target.value)}
-                    className="w-full px-2.5 py-1.5 rounded-lg border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100 focus:outline-none focus:ring-1 focus:ring-[#333d29]"
+                    className="w-full px-2.5 py-1.5 lg:py-2 text-xs sm:text-sm rounded-lg border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100 focus:outline-none focus:ring-1 focus:ring-[#333d29] cursor-pointer"
                   >
                     <option value="Semua Tugas">Semua Tugas (Default)</option>
                     {availableCategoryOptions.map((cat) => (
@@ -785,10 +792,28 @@ export function TaskManager({ initialTasks = [], initialCategories = [] }: TaskM
                   </select>
                 </div>
 
+                {/* Repeat Selection */}
+                <div>
+                  <label className="block text-[11px] sm:text-xs lg:text-xs font-semibold text-neutral-500 dark:text-neutral-400 mb-1">
+                    Ulangi (Rutin)
+                  </label>
+                  <select
+                    value={newRepeatType}
+                    onChange={(e) => setNewRepeatType(e.target.value as any)}
+                    className="w-full px-2.5 py-1.5 lg:py-2 text-xs sm:text-sm rounded-lg border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100 focus:outline-none cursor-pointer"
+                  >
+                    <option value="none">Tidak Berulang</option>
+                    <option value="daily">🔁 Setiap Hari (Harian)</option>
+                    <option value="weekdays">💼 Hari Kerja (Senin–Jumat)</option>
+                    <option value="weekly">📅 Setiap Minggu (Mingguan)</option>
+                    <option value="monthly">🗓️ Setiap Bulan (Bulanan)</option>
+                  </select>
+                </div>
+
                 {/* Due Date */}
                 <div>
-                  <label className="block text-[11px] font-medium text-neutral-500 dark:text-neutral-400 mb-1">
-                    Tenggat Waktu {parsedNLP.dueDate && "(ditimpa oleh teks)"}
+                  <label className="block text-[11px] sm:text-xs lg:text-xs font-semibold text-neutral-500 dark:text-neutral-400 mb-1">
+                    Tenggat Waktu {parsedNLP.dueDate && "(ditimpa teks)"}
                   </label>
                   <input
                     type="date"
@@ -798,17 +823,17 @@ export function TaskManager({ initialTasks = [], initialCategories = [] }: TaskM
                         : newDueDate
                     }
                     onChange={(e) => setNewDueDate(e.target.value)}
-                    className="w-full px-2.5 py-1.5 rounded-lg border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100 focus:outline-none"
+                    className="w-full px-2.5 py-1.5 lg:py-2 text-xs sm:text-sm rounded-lg border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100 focus:outline-none cursor-pointer"
                   />
                 </div>
               </div>
 
-              <div className="flex justify-between items-center pt-1 text-[11px] text-neutral-400">
-                <span>Tekan <kbd className="font-mono px-1 py-0.5 rounded border border-neutral-300 dark:border-neutral-700">Enter ↵</kbd> untuk simpan</span>
+              <div className="flex justify-between items-center pt-2 text-xs text-neutral-400">
+                <span>Tekan <kbd className="font-mono px-1.5 py-0.5 rounded border border-neutral-300 dark:border-neutral-700 text-xs">Enter ↵</kbd> untuk simpan</span>
                 <button
                   type="button"
                   onClick={() => setIsExpanded(false)}
-                  className="hover:underline text-neutral-500"
+                  className="hover:underline text-neutral-500 cursor-pointer"
                 >
                   Sembunyikan opsi
                 </button>

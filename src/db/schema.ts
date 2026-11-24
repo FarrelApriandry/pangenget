@@ -15,6 +15,7 @@ export const tasks = pgTable("tasks", {
   isPinned: boolean("is_pinned").default(false).notNull(),
   priority: text("priority", { enum: ["low", "medium", "high", "urgent"] }).default("medium").notNull(),
   category: text("category").default("Semua Tugas").notNull(),
+  repeatType: text("repeat_type", { enum: ["none", "daily", "weekdays", "weekly", "monthly"] }).default("none").notNull(),
   subtasks: jsonb("subtasks").$type<SubTask[]>().default([]).notNull(),
   dueDate: timestamp("due_date"),
   completedAt: timestamp("completed_at"),

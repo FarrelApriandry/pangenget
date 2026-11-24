@@ -2,6 +2,7 @@ import type { APIRoute } from "astro";
 import { db } from "../../../db";
 import { tasks } from "../../../db/schema";
 import { eq, and } from "drizzle-orm";
+import { calculateNextDueDate } from "../../../utils/recurring";
 
 function getUserId(request: Request, cookies: any): string | null {
   return request.headers.get("x-user-id") || cookies.get("pangenget_user_id")?.value || null;
@@ -81,6 +82,9 @@ export const PATCH: APIRoute = async ({ params, request, cookies }) => {
     if (Array.isArray(body.subtasks)) {
       updatePayload.subtasks = body.subtasks;
     }
+    if (typeof body.repeatType === "string" && ["none", "daily", "weekdays", "weekly", "monthly"].includes(body.repeatType)) {
+      updatePayload.repeatType = body.repeatType;
+    }
     if (typeof body.dueDate !== "undefined") {
       updatePayload.dueDate = body.dueDate ? new Date(body.dueDate) : null;
       // Reset reminder flags when due date changes so user gets notified for the new schedule
@@ -97,15 +101,50 @@ export const PATCH: APIRoute = async ({ params, request, cookies }) => {
       .where(condition)
       .returning();
 
-    if (updated.length === 0) {
+    if (updated.length === 0 || !updated[0]) {
       return new Response(
         JSON.stringify({ success: false, error: "Tugas tidak ditemukan atau Anda tidak memiliki akses." }),
         { status: 404, headers: { "Content-Type": "application/json" } }
       );
     }
 
+    const completedTask = updated[0];
+    let nextTask: any = null;
+
+    // Handle Recurring Task: If marked completed and has repeatType, create next cycle task
+    if (body.isCompleted === true && completedTask.repeatType && completedTask.repeatType !== "none") {
+      try {
+        const nextDueDate = calculateNextDueDate(completedTask.dueDate, completedTask.repeatType);
+        const resetSubtasks = Array.isArray(completedTask.subtasks)
+          ? completedTask.subtasks.map((s: any) => ({ ...s, isCompleted: false }))
+          : [];
+
+        const [createdNext] = await db
+          .insert(tasks)
+          .values({
+            userId: completedTask.userId,
+            title: completedTask.title,
+            description: completedTask.description,
+            priority: completedTask.priority,
+            category: completedTask.category,
+            repeatType: completedTask.repeatType,
+            dueDate: nextDueDate,
+            subtasks: resetSubtasks,
+            isPinned: completedTask.isPinned,
+            isCompleted: false,
+            telegramReminded24h: false,
+            telegramReminded1h: false,
+          })
+          .returning();
+
+        nextTask = createdNext;
+      } catch (recErr) {
+        console.error("Gagal membuat tugas berulang berikutnya:", recErr);
+      }
+    }
+
     return new Response(
-      JSON.stringify({ success: true, data: updated[0] }),
+      JSON.stringify({ success: true, data: completedTask, nextTask }),
       { status: 200, headers: { "Content-Type": "application/json" } }
     );
   } catch (err: any) {

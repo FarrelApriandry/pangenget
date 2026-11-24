@@ -38,28 +38,28 @@ export function Navbar({ siteName = "Pangenget", currentPath = "/" }: NavbarProp
     <>
       {/* Top Header */}
       <header className="sticky top-0 z-40 w-full border-b border-[#d5dcce]/80 dark:border-[#333d29]/80 bg-[#f7f8f4]/85 dark:bg-[#161a12]/85 backdrop-blur-md">
-        <div className="w-full px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+        <div className="w-full px-4 sm:px-6 lg:px-8 h-16 lg:h-18 flex items-center justify-between">
           {/* Brand Identity */}
           <a href="/" className="flex items-center gap-2.5 group shrink-0">
             <img
               src="/logo-64.png"
               alt="Logo Pangenget"
-              width="32"
-              height="32"
-              className="w-8 h-8 object-contain shadow-xs transition-transform group-hover:scale-105"
+              width="36"
+              height="36"
+              className="w-8 h-8 lg:w-9 lg:h-9 object-contain shadow-xs transition-transform group-hover:scale-105"
             />
             <div>
-              <span className="font-extrabold text-base tracking-tight text-[#333d29] dark:text-[#f5f7f1] block leading-none">
+              <span className="font-extrabold text-base lg:text-lg tracking-tight text-[#333d29] dark:text-[#f5f7f1] block leading-none">
                 {siteName}
               </span>
-              <span className="text-[10px] text-[#656d4a] dark:text-[#a4ac86] font-semibold tracking-wide uppercase">
+              <span className="text-[10px] lg:text-xs text-[#656d4a] dark:text-[#a4ac86] font-semibold tracking-wide uppercase">
                 Task Manager
               </span>
             </div>
           </a>
 
           {/* Desktop Navigation Tabs */}
-          <nav className="hidden sm:flex items-center gap-1 p-1 rounded-xl bg-[#e8ecde]/70 dark:bg-[#20261b]/90 border border-[#d3dbc3]/70 dark:border-[#333d29] text-xs font-semibold">
+          <nav className="hidden sm:flex items-center gap-1 p-1 lg:p-1.5 rounded-xl bg-[#e8ecde]/70 dark:bg-[#20261b]/90 border border-[#d3dbc3]/70 dark:border-[#333d29] text-xs lg:text-sm font-semibold">
             {navLinks.map((link) => {
               const active = isLinkActive(link.href);
               const Icon = link.icon;
@@ -67,13 +67,13 @@ export function Navbar({ siteName = "Pangenget", currentPath = "/" }: NavbarProp
                 <a
                   key={link.href}
                   href={link.href}
-                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition-all press-scale ${
+                  className={`flex items-center gap-1.5 px-3 lg:px-3.5 py-1.5 lg:py-2 rounded-lg transition-all press-scale ${
                     active
                       ? "bg-white dark:bg-[#293121] text-[#333d29] dark:text-[#f5f7f1] shadow-xs font-bold"
                       : "text-[#656d4a] dark:text-[#bcc7a6] hover:text-[#333d29] dark:hover:text-white"
                   }`}
                 >
-                  <Icon size={14} className={active ? "text-[#656d4a] dark:text-[#a4ac86]" : ""} />
+                  <Icon size={15} className={`shrink-0 ${active ? "text-[#656d4a] dark:text-[#a4ac86]" : ""}`} />
                   <span>{link.label}</span>
                 </a>
               );

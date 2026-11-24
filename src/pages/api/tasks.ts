@@ -50,7 +50,7 @@ export const GET: APIRoute = async ({ request, cookies }) => {
 export const POST: APIRoute = async ({ request, cookies }) => {
   try {
     const body = await request.json();
-    const { title, description, priority, category, dueDate, isPinned, subtasks } = body;
+    const { title, description, priority, category, dueDate, isPinned, subtasks, repeatType } = body;
 
     if (!title || typeof title !== "string" || !title.trim()) {
       return new Response(
@@ -62,6 +62,8 @@ export const POST: APIRoute = async ({ request, cookies }) => {
     const userId = getUserId(request, cookies);
     const validPriorities = ["low", "medium", "high", "urgent"] as const;
     const taskPriority = validPriorities.includes(priority) ? priority : "medium";
+    const validRepeats = ["none", "daily", "weekdays", "weekly", "monthly"] as const;
+    const taskRepeat = validRepeats.includes(repeatType) ? repeatType : "none";
 
     const [inserted] = await db
       .insert(tasks)
@@ -71,6 +73,7 @@ export const POST: APIRoute = async ({ request, cookies }) => {
         description: description?.trim() || null,
         priority: taskPriority,
         category: category && typeof category === "string" && category.trim() ? category.trim() : "Semua Tugas",
+        repeatType: taskRepeat,
         subtasks: Array.isArray(subtasks) ? subtasks : [],
         dueDate: dueDate ? new Date(dueDate) : null,
         isPinned: Boolean(isPinned),
