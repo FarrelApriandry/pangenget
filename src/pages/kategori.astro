@@ -2,10 +2,11 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { CategoryWorkspace } from "../components/CategoryWorkspace";
 import { db } from "../db";
-import { tasks } from "../db/schema";
+import { tasks, categories as categoriesTable } from "../db/schema";
 import { desc, asc, eq, isNull } from "drizzle-orm";
 
 let initialTasks: any[] = [];
+let initialCategories: string[] = [];
 const userId = Astro.cookies.get("pangenget_user_id")?.value || null;
 
 try {
@@ -20,6 +21,17 @@ try {
         asc(tasks.isCompleted),
         desc(tasks.createdAt)
       );
+
+    const catCondition = userId ? eq(categoriesTable.userId, userId) : isNull(categoriesTable.userId);
+    const dbCats = await db.select().from(categoriesTable).where(catCondition);
+    const set = new Set<string>();
+    dbCats.forEach((c) => set.add(c.name));
+    initialTasks.forEach((t) => {
+      if (t.category && t.category !== "Semua Tugas" && t.category !== "Umum" && t.category !== "all") {
+        set.add(t.category);
+      }
+    });
+    initialCategories = Array.from(set);
   }
 } catch (err: any) {
   console.error("DB error in kategori.astro:", err.message);
@@ -30,5 +42,5 @@ try {
   title="Kategori & Proyek — Pangenget"
   description="Kelola dan kelompokkan tugas berdasarkan domain pekerjaan, proyek, atau rutinitas pribadi."
 >
-  <CategoryWorkspace client:load initialTasks={initialTasks} />
+  <CategoryWorkspace client:load initialTasks={initialTasks} initialCategories={initialCategories} />
 </BaseLayout>

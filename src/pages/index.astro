@@ -2,11 +2,12 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { TaskManager } from "../components/TaskManager";
 import { db } from "../db";
-import { tasks } from "../db/schema";
+import { tasks, categories as categoriesTable } from "../db/schema";
 import { desc, asc, eq, isNull } from "drizzle-orm";
 import { Database, Sparkles } from "lucide-react";
 
 let initialTasks: any[] = [];
+let initialCategories: string[] = [];
 let dbError: string | null = null;
 const userId = Astro.cookies.get("pangenget_user_id")?.value || null;
 
@@ -22,6 +23,17 @@ try {
         asc(tasks.isCompleted),
         desc(tasks.createdAt)
       );
+
+    const catCondition = userId ? eq(categoriesTable.userId, userId) : isNull(categoriesTable.userId);
+    const dbCats = await db.select().from(categoriesTable).where(catCondition);
+    const set = new Set<string>();
+    dbCats.forEach((c) => set.add(c.name));
+    initialTasks.forEach((t) => {
+      if (t.category && t.category !== "Semua Tugas" && t.category !== "Umum" && t.category !== "all") {
+        set.add(t.category);
+      }
+    });
+    initialCategories = Array.from(set);
   }
 } catch (err: any) {
   dbError = err.message || "Database connection error";
@@ -65,6 +77,6 @@ try {
     )}
 
     <!-- Interactive Task Manager Island -->
-    <TaskManager client:load initialTasks={initialTasks} />
+    <TaskManager client:load initialTasks={initialTasks} initialCategories={initialCategories} />
   </div>
 </BaseLayout>

@@ -45,12 +45,12 @@ export function HistoryWorkspace({ initialTasks }: HistoryWorkspaceProps) {
     });
 
     const completedList = completedTasks
-      .map((t) => `• ${t.title}${t.category !== "Umum" ? ` #${t.category}` : ""}`)
+      .map((t) => `• ${t.title}${t.category && t.category !== "Umum" && t.category !== "Semua Tugas" ? ` #${t.category}` : ""}`)
       .join("\n");
 
     const activeList = tasks
       .filter((t) => !t.isCompleted)
-      .map((t) => `• ${t.title}${t.category !== "Umum" ? ` #${t.category}` : ""}`)
+      .map((t) => `• ${t.title}${t.category && t.category !== "Umum" && t.category !== "Semua Tugas" ? ` #${t.category}` : ""}`)
       .join("\n");
 
     const text =
