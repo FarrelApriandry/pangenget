@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { ThemeToggle } from "./ThemeToggle";
 import { UserButton } from "./UserButton";
-import { Flame, CheckCircle2, Clock, FolderKanban, Archive } from "lucide-react";
+import { Flame, CheckCircle2, Clock, FolderKanban, Archive, Calendar } from "lucide-react";
 import { getStreakData } from "../utils/streak";
 
 interface NavbarProps {
@@ -23,6 +23,7 @@ export function Navbar({ siteName = "Pangenget", currentPath = "/" }: NavbarProp
 
   const navLinks = [
     { label: "Hari Ini", href: "/", icon: Clock },
+    { label: "Kalender", href: "/kalender", icon: Calendar },
     { label: "Mode Fokus", href: "/fokus", icon: CheckCircle2 },
     { label: "Kategori", href: "/kategori", icon: FolderKanban },
     { label: "Riwayat", href: "/riwayat", icon: Archive },
