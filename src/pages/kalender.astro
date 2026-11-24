@@ -1,0 +1,46 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { CalendarWorkspace } from "../components/CalendarWorkspace";
+import { db } from "../db";
+import { tasks, categories as categoriesTable } from "../db/schema";
+import { desc, asc, eq, isNull } from "drizzle-orm";
+
+let initialTasks: any[] = [];
+let initialCategories: string[] = [];
+const userId = Astro.cookies.get("pangenget_user_id")?.value || null;
+
+try {
+  if (process.env.DATABASE_URL) {
+    const condition = userId ? eq(tasks.userId, userId) : isNull(tasks.userId);
+    initialTasks = await db
+      .select()
+      .from(tasks)
+      .where(condition)
+      .orderBy(
+        desc(tasks.isPinned),
+        asc(tasks.isCompleted),
+        desc(tasks.createdAt)
+      );
+
+    const catCondition = userId ? eq(categoriesTable.userId, userId) : isNull(categoriesTable.userId);
+    const dbCats = await db.select().from(categoriesTable).where(catCondition);
+    const set = new Set<string>();
+    dbCats.forEach((c) => set.add(c.name));
+    initialTasks.forEach((t) => {
+      if (t.category && t.category !== "Semua Tugas" && t.category !== "Umum" && t.category !== "all") {
+        set.add(t.category);
+      }
+    });
+    initialCategories = Array.from(set);
+  }
+} catch (err: any) {
+  console.error("DB error in kalender.astro:", err.message);
+}
+---
+
+<BaseLayout
+  title="Kalender & Linimasa — Pangenget"
+  description="Visualisasikan jadwal, beban kerja harian, dan tenggat tugas Anda dalam satu pandangan."
+>
+  <CalendarWorkspace client:load initialTasks={initialTasks} initialCategories={initialCategories} />
+</BaseLayout>
