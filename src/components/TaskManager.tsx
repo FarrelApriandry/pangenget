@@ -27,10 +27,12 @@ import {
 
 interface TaskManagerProps {
   initialTasks?: Task[];
+  initialCategories?: string[];
 }
 
-export function TaskManager({ initialTasks = [] }: TaskManagerProps) {
+export function TaskManager({ initialTasks = [], initialCategories = [] }: TaskManagerProps) {
   const [tasks, setTasks] = useState<Task[]>(initialTasks);
+  const [dbCategories, setDbCategories] = useState<string[]>(initialCategories);
   const [filterStatus, setFilterStatus] = useState<FilterStatus>("all");
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
@@ -40,7 +42,7 @@ export function TaskManager({ initialTasks = [] }: TaskManagerProps) {
   const [newTitle, setNewTitle] = useState("");
   const [newDescription, setNewDescription] = useState("");
   const [newPriority, setNewPriority] = useState<"low" | "medium" | "high" | "urgent">("medium");
-  const [newCategory, setNewCategory] = useState("Umum");
+  const [newCategory, setNewCategory] = useState("Semua Tugas");
   const [newDueDate, setNewDueDate] = useState("");
   const [isExpanded, setIsExpanded] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -137,22 +139,44 @@ export function TaskManager({ initialTasks = [] }: TaskManagerProps) {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [showShortcuts, isExpanded]);
 
-  // Multi-tenant Auth Listener: reload tasks whenever user logs in or out
+  // Multi-tenant Auth & Category Listener: reload tasks & categories whenever user logs in or out
   useEffect(() => {
     const handleAuthChange = async () => {
       try {
-        const res = await authFetch("/api/tasks");
-        const data = await res.json();
-        if (data.success && Array.isArray(data.data)) {
-          setTasks(data.data);
+        const resTasks = await authFetch("/api/tasks");
+        const dataTasks = await resTasks.json();
+        if (dataTasks.success && Array.isArray(dataTasks.data)) {
+          setTasks(dataTasks.data);
+        }
+
+        const resCats = await authFetch("/api/categories");
+        const dataCats = await resCats.json();
+        if (dataCats.success && Array.isArray(dataCats.data)) {
+          setDbCategories(dataCats.data.map((c: any) => c.name));
         }
       } catch (e) {
-        console.error("Auth reload tasks error:", e);
+        console.error("Auth reload error:", e);
+      }
+    };
+
+    const handleCategoryChange = async () => {
+      try {
+        const resCats = await authFetch("/api/categories");
+        const dataCats = await resCats.json();
+        if (dataCats.success && Array.isArray(dataCats.data)) {
+          setDbCategories(dataCats.data.map((c: any) => c.name));
+        }
+      } catch (e) {
+        console.error("Category reload error:", e);
       }
     };
 
     window.addEventListener("pangenget:auth_change", handleAuthChange);
-    return () => window.removeEventListener("pangenget:auth_change", handleAuthChange);
+    window.addEventListener("pangenget:category_change", handleCategoryChange);
+    return () => {
+      window.removeEventListener("pangenget:auth_change", handleAuthChange);
+      window.removeEventListener("pangenget:category_change", handleCategoryChange);
+    };
   }, []);
 
   // Feature 1: Realtime NLP Parser
@@ -216,11 +240,45 @@ export function TaskManager({ initialTasks = [] }: TaskManagerProps) {
     }
   };
 
-  // Extract unique categories
+  // Available user categories for dropdown selection (excluding 'Semua Tugas', 'Umum', 'all')
+  const availableCategoryOptions = useMemo(() => {
+    const set = new Set<string>();
+    dbCategories.forEach((c) => {
+      if (
+        c &&
+        c.trim() &&
+        c.trim().toLowerCase() !== "semua tugas" &&
+        c.trim().toLowerCase() !== "umum" &&
+        c.trim().toLowerCase() !== "all"
+      ) {
+        set.add(c.trim());
+      }
+    });
+    tasks.forEach((t) => {
+      if (
+        t.category &&
+        t.category.trim() &&
+        t.category.trim().toLowerCase() !== "semua tugas" &&
+        t.category.trim().toLowerCase() !== "umum" &&
+        t.category.trim().toLowerCase() !== "all"
+      ) {
+        set.add(t.category.trim());
+      }
+    });
+    return Array.from(set).sort((a, b) => a.localeCompare(b));
+  }, [dbCategories, tasks]);
+
+  // Extract unique categories for filter bar
   const categories = useMemo(() => {
     const set = new Set<string>();
     tasks.forEach((t) => {
-      if (t.category && t.category.trim()) {
+      if (
+        t.category &&
+        t.category.trim() &&
+        t.category.trim().toLowerCase() !== "semua tugas" &&
+        t.category.trim().toLowerCase() !== "umum" &&
+        t.category.trim().toLowerCase() !== "all"
+      ) {
         set.add(t.category.trim());
       }
     });
@@ -314,7 +372,7 @@ export function TaskManager({ initialTasks = [] }: TaskManagerProps) {
     // Apply NLP overrides if detected
     const finalTitle = parsedNLP.cleanTitle || newTitle.trim();
     const finalPriority = parsedNLP.priority || newPriority;
-    const finalCategory = parsedNLP.category || newCategory.trim() || "Umum";
+    const finalCategory = parsedNLP.category || (newCategory && newCategory !== "Semua Tugas" && newCategory.trim() ? newCategory.trim() : "Semua Tugas");
     const finalDueDate = parsedNLP.dueDate || (newDueDate ? new Date(newDueDate) : null);
 
     const payload = {
@@ -344,6 +402,7 @@ export function TaskManager({ initialTasks = [] }: TaskManagerProps) {
     setTasks((prev) => [optimisticTask, ...prev]);
     setNewTitle("");
     setNewDescription("");
+    setNewCategory("Semua Tugas");
     setNewDueDate("");
     setIsExpanded(false);
 
@@ -698,18 +757,32 @@ export function TaskManager({ initialTasks = [] }: TaskManagerProps) {
                   </select>
                 </div>
 
-                {/* Category Selection */}
+                {/* Category Selection Dropdown */}
                 <div>
-                  <label className="block text-[11px] font-medium text-neutral-500 dark:text-neutral-400 mb-1">
-                    Kategori {parsedNLP.category && "(ditimpa oleh teks)"}
-                  </label>
-                  <input
-                    type="text"
+                  <div className="flex items-center justify-between mb-1">
+                    <label className="block text-[11px] font-medium text-neutral-500 dark:text-neutral-400">
+                      Kategori {parsedNLP.category && "(ditimpa teks)"}
+                    </label>
+                    <a
+                      href="/kategori"
+                      className="text-[10px] text-[#656d4a] dark:text-[#a4ac86] hover:underline font-semibold"
+                      title="Kelola kategori di halaman khusus"
+                    >
+                      + Buat di /kategori
+                    </a>
+                  </div>
+                  <select
                     value={parsedNLP.category || newCategory}
                     onChange={(e) => setNewCategory(e.target.value)}
-                    placeholder="Contoh: Kerja (#kerja)"
-                    className="w-full px-2.5 py-1.5 rounded-lg border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100 focus:outline-none"
-                  />
+                    className="w-full px-2.5 py-1.5 rounded-lg border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100 focus:outline-none focus:ring-1 focus:ring-[#333d29]"
+                  >
+                    <option value="Semua Tugas">Semua Tugas (Default)</option>
+                    {availableCategoryOptions.map((cat) => (
+                      <option key={cat} value={cat}>
+                        {cat}
+                      </option>
+                    ))}
+                  </select>
                 </div>
 
                 {/* Due Date */}
@@ -804,6 +877,7 @@ export function TaskManager({ initialTasks = [] }: TaskManagerProps) {
             <TaskItem
               key={task.id}
               task={task}
+              availableCategories={availableCategoryOptions}
               onToggleComplete={handleToggleComplete}
               onTogglePin={handleTogglePin}
               onDelete={handleDeleteTask}

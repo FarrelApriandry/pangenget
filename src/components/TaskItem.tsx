@@ -22,6 +22,7 @@ interface TaskItemProps {
   onTogglePin: (id: string, current: boolean) => void;
   onDelete: (id: string) => void;
   onUpdate: (id: string, updates: Partial<Task>) => void;
+  availableCategories?: string[];
 }
 
 export function TaskItem({
@@ -30,6 +31,7 @@ export function TaskItem({
   onTogglePin,
   onDelete,
   onUpdate,
+  availableCategories = [],
 }: TaskItemProps) {
   const [isEditing, setIsEditing] = useState(false);
   const [showSubtasks, setShowSubtasks] = useState(false);
@@ -52,11 +54,12 @@ export function TaskItem({
     e.preventDefault();
     if (!editTitle.trim()) return;
 
+    const finalCategory = editCategory && editCategory !== "all" && editCategory.trim() ? editCategory.trim() : "Semua Tugas";
     onUpdate(task.id, {
       title: editTitle.trim(),
       description: editDescription.trim() || null,
       priority: editPriority as any,
-      category: editCategory.trim() || "Umum",
+      category: finalCategory,
       dueDate: editDueDate ? new Date(editDueDate) : null,
     });
     setIsEditing(false);
@@ -199,16 +202,31 @@ export function TaskItem({
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-[#656d4a] dark:text-[#a4ac86] mb-1">
-                Kategori
-              </label>
-              <input
-                type="text"
-                value={editCategory}
+              <div className="flex items-center justify-between mb-1">
+                <label className="block text-xs font-semibold text-[#656d4a] dark:text-[#a4ac86]">
+                  Kategori
+                </label>
+                <a
+                  href="/kategori"
+                  className="text-[10px] text-[#656d4a] dark:text-[#a4ac86] hover:underline"
+                >
+                  + /kategori
+                </a>
+              </div>
+              <select
+                value={editCategory || "Semua Tugas"}
                 onChange={(e) => setEditCategory(e.target.value)}
-                placeholder="Umum, Kerja, dll"
-                className="w-full px-2.5 py-1.5 text-xs rounded-lg border border-[#d5dcce] dark:border-[#333d29] bg-transparent text-[#333d29] dark:text-[#f5f7f1] focus:outline-none focus:ring-2 focus:ring-[#656d4a]"
-              />
+                className="w-full px-2.5 py-1.5 text-xs rounded-lg border border-[#d5dcce] dark:border-[#333d29] bg-white dark:bg-[#293121] text-[#333d29] dark:text-[#f5f7f1] focus:outline-none focus:ring-2 focus:ring-[#656d4a] cursor-pointer"
+              >
+                <option value="Semua Tugas">Semua Tugas (Default)</option>
+                {Array.from(new Set([...availableCategories, editCategory]))
+                  .filter((c) => c && c !== "Semua Tugas" && c !== "Umum" && c !== "all")
+                  .map((cat) => (
+                    <option key={cat} value={cat}>
+                      {cat}
+                    </option>
+                  ))}
+              </select>
             </div>
 
             <div>
@@ -291,8 +309,8 @@ export function TaskItem({
             </span>
 
             {/* Category Tag */}
-            {task.category && task.category !== "Umum" && (
-              <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-medium bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-400 border border-neutral-200/60 dark:border-neutral-700/60">
+            {task.category && task.category !== "Semua Tugas" && task.category !== "Umum" && (
+              <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-medium bg-[#e8ecde] dark:bg-[#20261b] text-[#656d4a] dark:text-[#d3dbc3] border border-[#d3dbc3] dark:border-[#333d29]">
                 <Tag size={10} />
                 <span>{task.category}</span>
               </span>
