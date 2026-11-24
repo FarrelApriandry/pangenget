@@ -70,7 +70,7 @@ export const POST: APIRoute = async ({ request, cookies }) => {
         title: title.trim(),
         description: description?.trim() || null,
         priority: taskPriority,
-        category: category?.trim() || "Umum",
+        category: category && typeof category === "string" && category.trim() ? category.trim() : "Semua Tugas",
         subtasks: Array.isArray(subtasks) ? subtasks : [],
         dueDate: dueDate ? new Date(dueDate) : null,
         isPinned: Boolean(isPinned),

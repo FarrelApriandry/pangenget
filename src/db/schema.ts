@@ -14,7 +14,7 @@ export const tasks = pgTable("tasks", {
   isCompleted: boolean("is_completed").default(false).notNull(),
   isPinned: boolean("is_pinned").default(false).notNull(),
   priority: text("priority", { enum: ["low", "medium", "high", "urgent"] }).default("medium").notNull(),
-  category: text("category").default("Umum").notNull(),
+  category: text("category").default("Semua Tugas").notNull(),
   subtasks: jsonb("subtasks").$type<SubTask[]>().default([]).notNull(),
   dueDate: timestamp("due_date"),
   completedAt: timestamp("completed_at"),
@@ -26,6 +26,16 @@ export const tasks = pgTable("tasks", {
 
 export type Task = typeof tasks.$inferSelect;
 export type NewTask = typeof tasks.$inferInsert;
+
+export const categories = pgTable("categories", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  userId: text("user_id"),
+  name: text("name").notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+export type Category = typeof categories.$inferSelect;
+export type NewCategory = typeof categories.$inferInsert;
 
 export const userSettings = pgTable("user_settings", {
   id: uuid("id").defaultRandom().primaryKey(),

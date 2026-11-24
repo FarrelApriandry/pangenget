@@ -76,7 +76,7 @@ export const PATCH: APIRoute = async ({ params, request, cookies }) => {
       updatePayload.priority = body.priority;
     }
     if (typeof body.category === "string") {
-      updatePayload.category = body.category.trim() || "Umum";
+      updatePayload.category = body.category.trim() || "Semua Tugas";
     }
     if (Array.isArray(body.subtasks)) {
       updatePayload.subtasks = body.subtasks;
