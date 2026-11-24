@@ -45,7 +45,7 @@ export function Navbar({ siteName = "Pangenget", currentPath = "/" }: NavbarProp
               alt="Logo Pangenget"
               width="32"
               height="32"
-              className="w-8 h-8 rounded-xl object-contain shadow-xs transition-transform group-hover:scale-105"
+              className="w-8 h-8 object-contain shadow-xs transition-transform group-hover:scale-105"
             />
             <div>
               <span className="font-extrabold text-base tracking-tight text-[#333d29] dark:text-[#f5f7f1] block leading-none">

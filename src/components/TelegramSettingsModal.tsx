@@ -191,8 +191,8 @@ export function TelegramSettingsModal({ isOpen, onClose, user }: TelegramSetting
         {/* Header */}
         <div className="flex items-center justify-between px-6 py-4 border-b border-[#d5dcce]/60 dark:border-[#333d29]/60 bg-[#e8ecde]/30 dark:bg-[#20261b]/50 shrink-0">
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-xl flex items-center justify-center shadow-xs overflow-hidden">
-              <img src="/logo-64.png" alt="Pangenget" width="32" height="32" className="w-8 h-8 object-contain rounded-xl" />
+            <div className="w-8 h-8 flex items-center justify-center shadow-xs">
+              <img src="/logo-64.png" alt="Pangenget" width="32" height="32" className="w-8 h-8 object-contain" />
             </div>
             <div>
               <h2 id="telegram-modal-title" className="text-base font-bold leading-tight text-[#333d29] dark:text-[#f5f7f1]">
