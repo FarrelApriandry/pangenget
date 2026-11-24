@@ -9,6 +9,21 @@ const BOT_TOKEN =
   process.env.TELEGRAM_BOT_TOKEN || "9003756956:AAHCGJjFDG71SNpsW895Na_TRo0grA1YJmU";
 const TELEGRAM_API_BASE = `https://api.telegram.org/bot${BOT_TOKEN}`;
 
+export interface InlineKeyboardButton {
+  text: string;
+  callback_data?: string;
+  url?: string;
+}
+
+export interface InlineKeyboardMarkup {
+  inline_keyboard: InlineKeyboardButton[][];
+}
+
+export interface SendTelegramOptions {
+  parseMode?: "HTML" | "Markdown";
+  replyMarkup?: InlineKeyboardMarkup;
+}
+
 export interface TelegramSendResult {
   success: boolean;
   messageId?: number;
@@ -70,19 +85,25 @@ function postToTelegram(endpoint: string, payload: any): Promise<any> {
 export async function sendTelegramMessage(
   chatId: string | number,
   text: string,
-  options: { parseMode?: "HTML" | "Markdown" } = { parseMode: "HTML" }
+  options: SendTelegramOptions = { parseMode: "HTML" }
 ): Promise<TelegramSendResult> {
   if (!chatId) {
     return { success: false, error: "Telegram Chat ID tidak boleh kosong." };
   }
 
   try {
-    const data = await postToTelegram("sendMessage", {
+    const payload: any = {
       chat_id: String(chatId).trim(),
       text,
       parse_mode: options.parseMode || "HTML",
       disable_web_page_preview: true,
-    });
+    };
+
+    if (options.replyMarkup) {
+      payload.reply_markup = options.replyMarkup;
+    }
+
+    const data = await postToTelegram("sendMessage", payload);
 
     if (!data.ok) {
       const description = data.description || "Gagal mengirim pesan ke Telegram.";
@@ -109,6 +130,95 @@ export async function sendTelegramMessage(
 }
 
 /**
+ * Answer a callback query from an inline keyboard click
+ */
+export async function answerCallbackQuery(
+  callbackQueryId: string,
+  text?: string,
+  showAlert: boolean = false
+): Promise<TelegramSendResult> {
+  try {
+    const payload: any = {
+      callback_query_id: callbackQueryId,
+      show_alert: showAlert,
+    };
+    if (text) {
+      payload.text = text;
+    }
+
+    const data = await postToTelegram("answerCallbackQuery", payload);
+    return { success: !!data.ok, error: data.ok ? undefined : data.description };
+  } catch (err: any) {
+    return { success: false, error: err.message };
+  }
+}
+
+/**
+ * Edit an existing message text (e.g. when marking a task done via button)
+ */
+export async function editTelegramMessageText(
+  chatId: string | number,
+  messageId: number,
+  text: string,
+  options: SendTelegramOptions = { parseMode: "HTML" }
+): Promise<TelegramSendResult> {
+  try {
+    const payload: any = {
+      chat_id: String(chatId).trim(),
+      message_id: messageId,
+      text,
+      parse_mode: options.parseMode || "HTML",
+      disable_web_page_preview: true,
+    };
+    if (options.replyMarkup) {
+      payload.reply_markup = options.replyMarkup;
+    }
+
+    const data = await postToTelegram("editMessageText", payload);
+    return { success: !!data.ok, error: data.ok ? undefined : data.description };
+  } catch (err: any) {
+    return { success: false, error: err.message };
+  }
+}
+
+/**
+ * Set Webhook URL on Telegram API
+ */
+export async function setTelegramWebhook(
+  url: string,
+  secretToken?: string
+): Promise<TelegramSendResult> {
+  try {
+    const payload: any = {
+      url,
+      drop_pending_updates: false,
+    };
+    if (secretToken) {
+      payload.secret_token = secretToken;
+    }
+
+    const data = await postToTelegram("setWebhook", payload);
+    return {
+      success: !!data.ok,
+      error: data.ok ? undefined : data.description || "Gagal mengatur webhook.",
+    };
+  } catch (err: any) {
+    return { success: false, error: err.message };
+  }
+}
+
+/**
+ * Get current Webhook info
+ */
+export async function getTelegramWebhookInfo(): Promise<any> {
+  try {
+    return await postToTelegram("getWebhookInfo", {});
+  } catch (err: any) {
+    return { ok: false, error: err.message };
+  }
+}
+
+/**
  * Send an immediate test message to verify the connection
  */
 export async function sendTestMessage(
@@ -130,11 +240,12 @@ Mulai sekarang, Anda akan menerima pengingat otomatis jika ada tugas yang mendek
 }
 
 /**
- * Send a structured task deadline reminder
+ * Send a structured task deadline reminder with interactive buttons
  */
 export async function sendDeadlineReminder(
   chatId: string | number,
   task: {
+    id?: string;
     title: string;
     category?: string | null;
     priority?: string | null;
@@ -175,14 +286,26 @@ ${headerTitle}
 ━━━━━━━━━━━━━━━━━━━━━
 ${priorityEmoji} <b>${escapeHtml(task.title)}</b>
 
-🏷️ Kategori: <code>#${escapeHtml(task.category || "Umum")}</code>
+🏷️ Kategori: <code>#${escapeHtml(task.category || "Semua Tugas")}</code>
 📊 Prioritas: <b>${priorityLabel}</b>
 ⏳ Tenggat: <b>${formattedDueDate}</b>
 
-<i>Segera buka Pangenget untuk menyelesaikan tugas Anda sebelum tenggat berakhir.</i>
+<i>Segera selesaikan tugas Anda sebelum tenggat berakhir.</i>
 `.trim();
 
-  return sendTelegramMessage(chatId, message, { parseMode: "HTML" });
+  const options: SendTelegramOptions = { parseMode: "HTML" };
+  if (task.id) {
+    options.replyMarkup = {
+      inline_keyboard: [
+        [
+          { text: "✅ Selesaikan Sekarang", callback_data: `done:${task.id}` },
+          { text: "🌐 Buka Pangenget", url: "https://pangenget.vercel.app" },
+        ],
+      ],
+    };
+  }
+
+  return sendTelegramMessage(chatId, message, options);
 }
 
 function escapeHtml(text: string): string {
